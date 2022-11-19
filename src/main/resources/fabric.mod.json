@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "pointactivity",
+  "version": "${version}",
+  "name": "PointActivity",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.yukulab.pointactivity.client.PointActivityClient"
+    ],
+    "main": [
+      "net.yukulab.pointactivity.PointActivity"
+    ]
+  },
+  "mixins": [
+    "pointactivity.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}
