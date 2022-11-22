@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.util;
+package net.yukulab.pointactivity.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
