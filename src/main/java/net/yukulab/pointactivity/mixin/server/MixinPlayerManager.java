@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin;
+package net.yukulab.pointactivity.mixin.server;
 
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;

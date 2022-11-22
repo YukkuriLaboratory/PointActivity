@@ -3,12 +3,12 @@
   "minVersion": "0.8",
   "package": "net.yukulab.pointactivity.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "MixinClientConnection",
-    "MixinPlayerManager",
-    "MixinServerPlayerEntity"
-  ],
   "client": [
+  ],
+  "server": [
+    "server.MixinClientConnection",
+    "server.MixinPlayerManager",
+    "server.MixinServerPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1
