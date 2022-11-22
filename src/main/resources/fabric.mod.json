@@ -39,7 +39,8 @@
         "net/yukulab/pointactivity/mixin/extension/PointHolder"
       ],
       "net/minecraft/class_310": [
-        "net/yukulab/pointactivity/mixin/extension/PointHolder"
+        "net/yukulab/pointactivity/mixin/extension/PointHolder",
+        "net/yukulab/pointactivity/mixin/extension/ClientConfigHolder"
       ]
     }
   }
