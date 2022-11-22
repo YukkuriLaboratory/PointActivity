@@ -28,11 +28,11 @@ public class PointContainer {
      * これは後々コンフィグとかで変更できるようにする
      */
     @Environment(EnvType.CLIENT)
-    private static final int continueTimeMillis = 1500;
+    private static final int CONTINUE_TIME_MILLIS = 1500;
 
     @Environment(EnvType.SERVER)
-    public PointContainer(ServerPlayerEntity player) {
-        this.player = player;
+    public PointContainer(ServerPlayerEntity playerEntity) {
+        player = playerEntity;
     }
 
     @Environment(EnvType.CLIENT)
@@ -79,7 +79,7 @@ public class PointContainer {
     @Environment(EnvType.CLIENT)
     public void tick() {
         var now = Instant.now();
-        if (currentCombo != 0 && Duration.between(lastComboTime, now).toMillis() > continueTimeMillis) {
+        if (currentCombo != 0 && Duration.between(lastComboTime, now).toMillis() > CONTINUE_TIME_MILLIS) {
             subtractPoint(currentCombo);
             currentCombo = 0;
         }

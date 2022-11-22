@@ -12,6 +12,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.network.Networking;
 
 public class UpdatePointS2CPacket {
+    protected UpdatePointS2CPacket() {
+        throw new UnsupportedOperationException("Do not call me");
+    }
+
     @Environment(EnvType.SERVER)
     public static void send(ServerPlayerEntity player, int currentPoint) {
         var buf = PacketByteBufs.create();
@@ -20,7 +24,12 @@ public class UpdatePointS2CPacket {
     }
 
     @Environment(EnvType.CLIENT)
-    public static void onReceive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+    public static void onReceive(
+            MinecraftClient client,
+            ClientPlayNetworkHandler handler,
+            PacketByteBuf buf,
+            PacketSender responseSender
+    ) {
         var currentPoint = buf.readInt();
         client.getPointContainer().ifPresent(container -> container.setPoint(currentPoint));
     }

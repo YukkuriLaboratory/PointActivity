@@ -19,6 +19,10 @@ import java.util.function.Consumer;
 
 
 public class HandShakeS2CPacket {
+    protected HandShakeS2CPacket() {
+        throw new UnsupportedOperationException("Do not call me");
+    }
+
     @Environment(EnvType.SERVER)
     public static void sendQuery(
             ServerLoginNetworkHandler handler,
@@ -28,7 +32,6 @@ public class HandShakeS2CPacket {
     ) {
         sender.sendPacket(Networking.HANDSHAKE, PacketByteBufs.empty());
     }
-
 
     @Environment(EnvType.SERVER)
     public static void onHandShakeServer(
