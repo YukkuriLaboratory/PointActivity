@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.client;
+package net.yukulab.pointactivity;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

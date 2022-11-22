@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.server;
+package net.yukulab.pointactivity;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.EnvType;

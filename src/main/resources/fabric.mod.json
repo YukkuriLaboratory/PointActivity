@@ -10,16 +10,16 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.yukulab.pointactivity.client.PointActivityClient"
+      "net.yukulab.pointactivity.PointActivityClient"
     ],
     "server": [
-      "net.yukulab.pointactivity.server.PointActivityServer"
+      "net.yukulab.pointactivity.PointActivityServer"
     ],
     "main": [
       "net.yukulab.pointactivity.PointActivity"
     ],
     "modmenu": [
-      "net.yukulab.pointactivity.client.ModMenuIntegration"
+      "net.yukulab.pointactivity.ModMenuIntegration"
     ]
   },
   "mixins": [

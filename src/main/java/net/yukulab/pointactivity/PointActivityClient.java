@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.client;
+package net.yukulab.pointactivity;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
