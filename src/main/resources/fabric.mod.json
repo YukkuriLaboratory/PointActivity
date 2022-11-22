@@ -17,6 +17,9 @@
     ],
     "main": [
       "net.yukulab.pointactivity.PointActivity"
+    ],
+    "modmenu": [
+      "net.yukulab.pointactivity.client.ModMenuIntegration"
     ]
   },
   "mixins": [
