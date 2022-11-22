@@ -8,7 +8,6 @@ import net.yukulab.pointactivity.util.PointContainer;
 
 @Environment(EnvType.SERVER)
 public class ServerPointContainer extends PointContainer {
-    @Environment(EnvType.SERVER)
     private final ServerPlayerEntity player;
 
     public ServerPointContainer(ServerPlayerEntity playerEntity) {
