@@ -1,29 +1,27 @@
 package net.yukulab.pointactivity.network.packet.play;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.yukulab.pointactivity.network.Networking;
 
-public class UpdatePointS2CPacket extends CustomPlayPacket {
-    static {
-        NAME = id("updatepoint");
-    }
-
-    final int currentPoint;
-
-    public UpdatePointS2CPacket(int point) {
-        currentPoint = point;
-    }
-
-    public UpdatePointS2CPacket(PacketByteBuf buf) {
-        currentPoint = buf.readInt();
-    }
-
-    @Override
-    public void send(ServerPlayerEntity player) {
+public class UpdatePointS2CPacket {
+    @Environment(EnvType.SERVER)
+    public static void send(ServerPlayerEntity player, int currentPoint) {
         var buf = PacketByteBufs.create();
         buf.writeInt(currentPoint);
-        ServerPlayNetworking.send(player, NAME, buf);
+        ServerPlayNetworking.send(player, Networking.UPDATE_POINT, buf);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void onReceive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
+        var currentPoint = buf.readInt();
+        // TODO
     }
 }

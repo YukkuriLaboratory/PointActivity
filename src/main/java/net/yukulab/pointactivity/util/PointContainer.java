@@ -44,6 +44,6 @@ public class PointContainer {
     }
 
     private void sendUpdatePacket() {
-        new UpdatePointS2CPacket(currentPoint).send(player);
+        UpdatePointS2CPacket.send(player, currentPoint);
     }
 }

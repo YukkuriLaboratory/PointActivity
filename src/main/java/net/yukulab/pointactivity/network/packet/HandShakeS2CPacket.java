@@ -12,17 +12,13 @@ import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
+import net.yukulab.pointactivity.network.Networking;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 
-public class HandShakeS2CPacket extends CustomPacket {
-
-    static {
-        NAME = id("handshake");
-    }
-
+public class HandShakeS2CPacket {
     @Environment(EnvType.SERVER)
     public static void sendQuery(
             ServerLoginNetworkHandler handler,
@@ -30,7 +26,7 @@ public class HandShakeS2CPacket extends CustomPacket {
             PacketSender sender,
             ServerLoginNetworking.LoginSynchronizer synchronizer
     ) {
-        sender.sendPacket(NAME, PacketByteBufs.empty());
+        sender.sendPacket(Networking.HANDSHAKE, PacketByteBufs.empty());
     }
 
 
