@@ -15,8 +15,8 @@ public class MixinPlayerManager {
             at = @At("HEAD")
     )
     public void initPointContainer(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        if (connection.isModLoaded()) {
-            player.initPointContainer();
+        if (connection.pointactivity$isModLoaded()) {
+            player.pointactivity$initPointContainer();
         }
     }
 }

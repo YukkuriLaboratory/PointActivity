@@ -4,10 +4,12 @@ import net.yukulab.pointactivity.point.PointContainer;
 
 import java.util.Optional;
 
+@SuppressWarnings("checkstyle:MethodName")
 public interface PointHolder {
-    default Optional<PointContainer> getPointContainer() {
+    default Optional<PointContainer> pointactivity$getPointContainer() {
         return Optional.empty();
     }
 
-    default void initPointContainer() {}
+    default void pointactivity$initPointContainer() {
+    }
 }

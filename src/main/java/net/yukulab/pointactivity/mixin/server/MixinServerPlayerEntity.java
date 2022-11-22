@@ -15,24 +15,22 @@ import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
 public class MixinServerPlayerEntity implements PointHolder {
-    @SuppressWarnings("checkstyle:ConstantName")
-    private static final String pointactivity$POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
+    private static final String POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
 
-    @SuppressWarnings("checkstyle:MemberName")
-    private ServerPointContainer pointactivity$pointContainer;
+    private ServerPointContainer pointContainer;
 
     @Override
-    public Optional<PointContainer> getPointContainer() {
-        return Optional.ofNullable(pointactivity$pointContainer);
+    public Optional<PointContainer> pointactivity$getPointContainer() {
+        return Optional.ofNullable(pointContainer);
     }
 
     @Override
-    public void initPointContainer() {
-        if (getPointContainer().isPresent()) {
+    public void pointactivity$initPointContainer() {
+        if (pointactivity$getPointContainer().isPresent()) {
             throw new IllegalStateException("PointContainer already initialized!");
         }
         var player = (ServerPlayerEntity) (Object) this;
-        pointactivity$pointContainer = new ServerPointContainer(player);
+        pointContainer = new ServerPointContainer(player);
     }
 
     @Inject(
@@ -40,7 +38,9 @@ public class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     public void writePointContainerData(NbtCompound nbt, CallbackInfo ci) {
-        getPointContainer().ifPresent(container -> nbt.putInt(pointactivity$POINT_TAG, container.getPoint()));
+        pointactivity$getPointContainer().ifPresent(container ->
+                nbt.putInt(POINT_TAG, container.getPoint())
+        );
     }
 
     @Inject(
@@ -48,8 +48,8 @@ public class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     public void readPointContainerData(NbtCompound nbt, CallbackInfo ci) {
-        getPointContainer().ifPresent(container -> {
-            var actionPoint = nbt.getInt(pointactivity$POINT_TAG);
+        pointactivity$getPointContainer().ifPresent(container -> {
+            var actionPoint = nbt.getInt(POINT_TAG);
             container.setPoint(actionPoint);
         });
     }

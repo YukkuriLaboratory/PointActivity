@@ -44,7 +44,7 @@ public class HandShakeS2CPacket {
         if (!understood) {
             return;
         }
-        handler.connection.onModLoaded();
+        handler.connection.pointactivity$onModLoaded();
     }
 
     @Environment(EnvType.CLIENT)

@@ -18,11 +18,9 @@ import java.util.Optional;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
-    @SuppressWarnings("checkstyle:membername")
-    private ClientPointContainer pointactivity$pointContainer;
+    private ClientPointContainer pointContainer;
 
-    @SuppressWarnings("checkstyle:membername")
-    private ClientConfig pointactivity$config =
+    private ClientConfig clientConfig =
             ConfigIO.readConfig(ClientConfig.class).orElseGet(() -> {
                 var config = ClientConfig.getAsDefault();
                 ConfigIO.writeConfig(config);
@@ -30,27 +28,27 @@ public class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
             });
 
     @Override
-    public Optional<PointContainer> getPointContainer() {
-        return Optional.ofNullable(pointactivity$pointContainer);
+    public Optional<PointContainer> pointactivity$getPointContainer() {
+        return Optional.ofNullable(pointContainer);
     }
 
     @Override
-    public void initPointContainer() {
-        if (pointactivity$pointContainer != null) {
+    public void pointactivity$initPointContainer() {
+        if (pointContainer != null) {
             throw new IllegalStateException("PointContainer already be initialized!");
         }
-        pointactivity$pointContainer = new ClientPointContainer();
+        pointContainer = new ClientPointContainer();
     }
 
     @Override
     public ClientConfig pointactivity$getConfig() {
-        return pointactivity$config;
+        return clientConfig;
     }
 
     @Override
     public void pointactivity$setConfig(@NotNull ClientConfig config) {
-        if (!config.equals(pointactivity$config)) {
-            pointactivity$config = config;
+        if (!config.equals(this.clientConfig)) {
+            this.clientConfig = config;
             ConfigIO.writeConfig(config);
         }
     }
@@ -60,7 +58,7 @@ public class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
             at = @At("RETURN")
     )
     private void initPointContainer(RunArgs args, CallbackInfo ci) {
-        initPointContainer();
+        pointactivity$initPointContainer();
     }
 
     @Inject(
@@ -68,6 +66,6 @@ public class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
             at = @At("RETURN")
     )
     private void tickPointContainer(CallbackInfo ci) {
-        pointactivity$pointContainer.tick();
+        pointContainer.tick();
     }
 }

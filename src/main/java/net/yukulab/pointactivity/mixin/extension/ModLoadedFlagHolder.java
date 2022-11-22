@@ -1,9 +1,11 @@
 package net.yukulab.pointactivity.mixin.extension;
 
+@SuppressWarnings("checkstyle:MethodName")
 public interface ModLoadedFlagHolder {
-    default boolean isModLoaded() {
+    default boolean pointactivity$isModLoaded() {
         return false;
     }
 
-    default void onModLoaded() {}
+    default void pointactivity$onModLoaded() {
+    }
 }

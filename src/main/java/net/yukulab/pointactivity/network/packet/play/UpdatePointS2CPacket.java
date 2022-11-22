@@ -31,6 +31,6 @@ public class UpdatePointS2CPacket {
             PacketSender responseSender
     ) {
         var currentPoint = buf.readInt();
-        client.getPointContainer().ifPresent(container -> container.setPoint(currentPoint));
+        client.pointactivity$getPointContainer().ifPresent(container -> container.setPoint(currentPoint));
     }
 }
