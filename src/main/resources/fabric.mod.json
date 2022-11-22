@@ -12,6 +12,9 @@
     "client": [
       "net.yukulab.pointactivity.client.PointActivityClient"
     ],
+    "server": [
+      "net.yukulab.pointactivity.server.PointActivityServer"
+    ],
     "main": [
       "net.yukulab.pointactivity.PointActivity"
     ]
