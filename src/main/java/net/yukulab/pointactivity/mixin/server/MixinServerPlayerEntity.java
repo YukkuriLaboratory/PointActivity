@@ -4,6 +4,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.mixin.extension.PointHolder;
+import net.yukulab.pointactivity.server.ServerPointContainer;
 import net.yukulab.pointactivity.util.PointContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,7 @@ public class MixinServerPlayerEntity implements PointHolder {
     private static final String pointactivity$POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
 
     @SuppressWarnings("checkstyle:MemberName")
-    private PointContainer pointactivity$pointContainer;
+    private ServerPointContainer pointactivity$pointContainer;
 
     @Override
     public Optional<PointContainer> getPointContainer() {
@@ -31,7 +32,7 @@ public class MixinServerPlayerEntity implements PointHolder {
             throw new IllegalStateException("PointContainer already initialized!");
         }
         var player = (ServerPlayerEntity) (Object) this;
-        pointactivity$pointContainer = new PointContainer(player);
+        pointactivity$pointContainer = new ServerPointContainer(player);
     }
 
     @Inject(

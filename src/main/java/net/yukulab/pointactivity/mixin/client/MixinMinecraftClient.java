@@ -2,6 +2,7 @@ package net.yukulab.pointactivity.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.yukulab.pointactivity.client.ClientPointContainer;
 import net.yukulab.pointactivity.mixin.extension.PointHolder;
 import net.yukulab.pointactivity.util.PointContainer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient implements PointHolder {
     @SuppressWarnings("checkstyle:membername")
-    private PointContainer pointactivity$pointContainer;
+    private ClientPointContainer pointactivity$pointContainer;
 
     @Override
     public Optional<PointContainer> getPointContainer() {
@@ -26,7 +27,7 @@ public class MixinMinecraftClient implements PointHolder {
         if (pointactivity$pointContainer != null) {
             throw new IllegalStateException("PointContainer already be initialized!");
         }
-        pointactivity$pointContainer = new PointContainer();
+        pointactivity$pointContainer = new ClientPointContainer();
     }
 
     @Inject(
