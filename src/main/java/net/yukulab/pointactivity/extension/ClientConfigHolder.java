@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin.extension;
+package net.yukulab.pointactivity.extension;
 
 import net.yukulab.pointactivity.config.ClientConfig;
 import org.jetbrains.annotations.NotNull;

@@ -3,7 +3,7 @@ package net.yukulab.pointactivity.mixin.server;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.PointActivity;
-import net.yukulab.pointactivity.mixin.extension.PointHolder;
+import net.yukulab.pointactivity.extension.PointHolder;
 import net.yukulab.pointactivity.point.PointContainer;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;

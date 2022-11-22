@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin.extension;
+package net.yukulab.pointactivity.extension;
 
 import net.yukulab.pointactivity.point.PointContainer;
 

@@ -1,7 +1,7 @@
 package net.yukulab.pointactivity.mixin.server;
 
 import net.minecraft.network.ClientConnection;
-import net.yukulab.pointactivity.mixin.extension.ModLoadedFlagHolder;
+import net.yukulab.pointactivity.extension.ModLoadedFlagHolder;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ClientConnection.class)

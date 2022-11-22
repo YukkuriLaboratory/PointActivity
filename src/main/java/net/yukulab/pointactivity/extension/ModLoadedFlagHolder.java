@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin.extension;
+package net.yukulab.pointactivity.extension;
 
 @SuppressWarnings("checkstyle:MethodName")
 public interface ModLoadedFlagHolder {
