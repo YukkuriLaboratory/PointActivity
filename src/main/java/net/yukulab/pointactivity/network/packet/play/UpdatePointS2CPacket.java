@@ -22,6 +22,6 @@ public class UpdatePointS2CPacket {
     @Environment(EnvType.CLIENT)
     public static void onReceive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         var currentPoint = buf.readInt();
-        // TODO
+        client.getPointContainer().ifPresent(container -> container.setPoint(currentPoint));
     }
 }
