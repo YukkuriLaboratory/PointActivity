@@ -29,8 +29,15 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_2535": ["net/yukulab/pointactivity/mixin/extension/ModLoadedFlagHolder"],
-      "net/minecraft/class_3222": ["net/yukulab/pointactivity/mixin/extension/PointHolder"]
+      "net/minecraft/class_2535": [
+        "net/yukulab/pointactivity/mixin/extension/ModLoadedFlagHolder"
+      ],
+      "net/minecraft/class_3222": [
+        "net/yukulab/pointactivity/mixin/extension/PointHolder"
+      ],
+      "net/minecraft/class_310": [
+        "net/yukulab/pointactivity/mixin/extension/PointHolder"
+      ]
     }
   }
 }
