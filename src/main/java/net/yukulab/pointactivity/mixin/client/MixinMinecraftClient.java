@@ -2,9 +2,9 @@ package net.yukulab.pointactivity.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import net.yukulab.pointactivity.client.ClientPointContainer;
 import net.yukulab.pointactivity.mixin.extension.PointHolder;
-import net.yukulab.pointactivity.util.PointContainer;
+import net.yukulab.pointactivity.point.ClientPointContainer;
+import net.yukulab.pointactivity.point.PointContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -1,6 +1,6 @@
 package net.yukulab.pointactivity.mixin.extension;
 
-import net.yukulab.pointactivity.util.PointContainer;
+import net.yukulab.pointactivity.point.PointContainer;
 
 import java.util.Optional;
 

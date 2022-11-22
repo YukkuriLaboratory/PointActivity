@@ -1,10 +1,9 @@
-package net.yukulab.pointactivity.server;
+package net.yukulab.pointactivity.point;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.network.packet.play.UpdatePointS2CPacket;
-import net.yukulab.pointactivity.util.PointContainer;
 
 @Environment(EnvType.SERVER)
 public class ServerPointContainer extends PointContainer {

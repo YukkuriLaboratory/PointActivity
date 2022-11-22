@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.util;
+package net.yukulab.pointactivity.point;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;

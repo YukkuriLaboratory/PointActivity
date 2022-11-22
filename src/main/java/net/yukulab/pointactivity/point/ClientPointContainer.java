@@ -1,8 +1,7 @@
-package net.yukulab.pointactivity.client;
+package net.yukulab.pointactivity.point;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.yukulab.pointactivity.util.PointContainer;
 
 import java.time.Duration;
 import java.time.Instant;
