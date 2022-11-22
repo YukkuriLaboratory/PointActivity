@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
-public class MixinServerPlayerEntity implements PointHolder {
+public abstract class MixinServerPlayerEntity implements PointHolder {
     private static final String POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
 
     private ServerPointContainer pointContainer;

@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(MinecraftClient.class)
-public class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
+public abstract class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
     private ClientPointContainer pointContainer;
 
     private ClientConfig clientConfig =

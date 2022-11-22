@@ -5,7 +5,7 @@ import net.yukulab.pointactivity.mixin.extension.ModLoadedFlagHolder;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ClientConnection.class)
-public class MixinClientConnection implements ModLoadedFlagHolder {
+public abstract class MixinClientConnection implements ModLoadedFlagHolder {
     private boolean isModLoaded;
 
     @Override
