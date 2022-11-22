@@ -27,6 +27,9 @@ public class MixinServerPlayerEntity implements PointHolder {
 
     @Override
     public void initPointContainer() {
+        if(getPointContainer().isPresent()) {
+            throw new IllegalStateException("PointContainer already initialized!");
+        }
         pointactivity$pointContainer = new PointContainer();
     }
 
