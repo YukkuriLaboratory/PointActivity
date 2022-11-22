@@ -24,8 +24,10 @@ public class ServerPointContainer extends PointContainer {
     @Override
     public void setPoint(int point) {
         super.setPoint(point);
-        currentPoint = point;
-        sendUpdatePacket();
+        if (point != currentPoint) {
+            currentPoint = point;
+            sendUpdatePacket();
+        }
     }
 
     private void sendUpdatePacket() {

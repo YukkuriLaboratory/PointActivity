@@ -30,7 +30,7 @@ public class ClientPointContainer extends PointContainer {
     @Override
     public void setPoint(int point) {
         super.setPoint(point);
-        currentCombo = point;
+        currentCombo = currentPoint - point;
         lastComboTime = Instant.now();
     }
 }

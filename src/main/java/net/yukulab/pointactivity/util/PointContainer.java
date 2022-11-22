@@ -21,9 +21,6 @@ public abstract class PointContainer {
         if (point < 0) {
             throw new IllegalArgumentException("Point must not be negative amount!");
         }
-        if (point == currentPoint) {
-            return;
-        }
     }
 
     public int getPoint() {
