@@ -9,20 +9,16 @@ import java.time.Instant;
 
 @Environment(EnvType.CLIENT)
 public class ClientPointContainer extends PointContainer {
-    @Environment(EnvType.CLIENT)
     private int currentCombo;
 
-    @Environment(EnvType.CLIENT)
     private Instant lastComboTime;
 
     /**
      * コンボの継続時間
      * これは後々コンフィグとかで変更できるようにする
      */
-    @Environment(EnvType.CLIENT)
     private static final int CONTINUE_TIME_MILLIS = 1500;
 
-    @Environment(EnvType.CLIENT)
     public void tick() {
         var now = Instant.now();
         if (currentCombo != 0 && Duration.between(lastComboTime, now).toMillis() > CONTINUE_TIME_MILLIS) {
