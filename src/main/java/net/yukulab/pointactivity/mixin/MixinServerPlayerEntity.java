@@ -14,8 +14,10 @@ import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
 public class MixinServerPlayerEntity implements PointHolder {
-    private static final String pointactivity$NbtTag = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
+    @SuppressWarnings("checkstyle:ConstantName")
+    private static final String pointactivity$POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
 
+    @SuppressWarnings("checkstyle:MemberName")
     private PointContainer pointactivity$pointContainer;
 
     @Override
@@ -33,7 +35,7 @@ public class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     public void writePointContainerData(NbtCompound nbt, CallbackInfo ci) {
-        getPointContainer().ifPresent(container -> nbt.putInt(pointactivity$NbtTag, container.getPoint()));
+        getPointContainer().ifPresent(container -> nbt.putInt(pointactivity$POINT_TAG, container.getPoint()));
     }
 
     @Inject(
@@ -42,7 +44,7 @@ public class MixinServerPlayerEntity implements PointHolder {
     )
     public void readPointContainerData(NbtCompound nbt, CallbackInfo ci) {
         getPointContainer().ifPresent(container -> {
-            var actionPoint = nbt.getInt(pointactivity$NbtTag);
+            var actionPoint = nbt.getInt(pointactivity$POINT_TAG);
             container.setPoint(actionPoint);
         });
     }

@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ClientConnection.class)
 public class MixinClientConnection implements ModLoadedFlagHolder {
+    @SuppressWarnings("checkstyle:membername")
     private boolean pointactivity$isModLoaded;
 
     @Override

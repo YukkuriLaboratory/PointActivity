@@ -8,6 +8,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
 import net.yukulab.pointactivity.network.packet.HandShakeS2CPacket;
 
 public class Networking {
+    protected Networking() {}
+
     @Environment(EnvType.SERVER)
     public static void registerServerReceivers() {
         ServerLoginConnectionEvents.QUERY_START.register(HandShakeS2CPacket::sendQuery);

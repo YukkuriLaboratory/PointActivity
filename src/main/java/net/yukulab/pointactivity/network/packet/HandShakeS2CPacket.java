@@ -19,18 +19,29 @@ import java.util.function.Consumer;
 
 public class HandShakeS2CPacket extends CustomPacket {
 
-    public HandShakeS2CPacket() {
-        super("handshake");
+    static {
+        NAME = id("handshake");
     }
 
     @Environment(EnvType.SERVER)
-    public static void sendQuery(ServerLoginNetworkHandler handler, MinecraftServer server, PacketSender sender, ServerLoginNetworking.LoginSynchronizer synchronizer) {
+    public static void sendQuery(
+            ServerLoginNetworkHandler handler,
+            MinecraftServer server,
+            PacketSender sender,
+            ServerLoginNetworking.LoginSynchronizer synchronizer
+    ) {
         sender.sendPacket(NAME, PacketByteBufs.empty());
     }
 
 
     @Environment(EnvType.SERVER)
-    public static void onHandShakeServer(MinecraftServer server, ServerLoginNetworkHandler handler, boolean understood, PacketByteBuf buf, ServerLoginNetworking.LoginSynchronizer synchronizer, PacketSender responseSender) {
+    public static void onHandShakeServer(
+            MinecraftServer server,
+            ServerLoginNetworkHandler handler,
+            boolean understood, PacketByteBuf buf,
+            ServerLoginNetworking.LoginSynchronizer synchronizer,
+            PacketSender responseSender
+    ) {
         if (!understood) {
             return;
         }
@@ -38,7 +49,12 @@ public class HandShakeS2CPacket extends CustomPacket {
     }
 
     @Environment(EnvType.CLIENT)
-    public static CompletableFuture<PacketByteBuf> onHandShakeClient(MinecraftClient client, ClientLoginNetworkHandler clientLoginNetworkHandler, PacketByteBuf buf, Consumer<GenericFutureListener<? extends Future<? super Void>>> genericFutureListenerConsumer) {
+    public static CompletableFuture<PacketByteBuf> onHandShakeClient(
+            MinecraftClient client,
+            ClientLoginNetworkHandler clientLoginNetworkHandler,
+            PacketByteBuf buf,
+            Consumer<GenericFutureListener<? extends Future<? super Void>>> genericFutureListenerConsumer
+    ) {
         return CompletableFuture.completedFuture(PacketByteBufs.empty());
     }
 }

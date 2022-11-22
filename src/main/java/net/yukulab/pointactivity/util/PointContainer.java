@@ -20,7 +20,7 @@ public class PointContainer {
         }
         currentPoint = point;
     }
-    
+
     public int getPoint() {
         return currentPoint;
     }
