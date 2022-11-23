@@ -20,6 +20,7 @@ public class ModMenuIntegration implements ModMenuApi {
             var clientDefaultConfig = ClientConfig.getAsDefault();
             var clientConfig = getClientConfig();
             var comboContinueTimeMillis = new AtomicInteger(clientConfig.comboContinueTimeMillis());
+            var pointAnimationMillis = new AtomicInteger(clientConfig.pointAnimationTimeMillis());
 
             var builder = ConfigBuilder.create()
                     .setParentScreen(parent)
@@ -29,10 +30,19 @@ public class ModMenuIntegration implements ModMenuApi {
 
             var clientCategory = builder.getOrCreateCategory(Text.literal("Client"));
             clientCategory.addEntry(
-                    entryBuilder.startIntField(Text.literal("Combo継続時間(ミリ秒)"), clientConfig.comboContinueTimeMillis())
+                    entryBuilder.startIntField(Text.literal("コンボの継続時間(ミリ秒)"), clientConfig.comboContinueTimeMillis())
                             .setDefaultValue(clientDefaultConfig.comboContinueTimeMillis())
                             .setMin(0)
                             .setSaveConsumer(comboContinueTimeMillis::set)
+                            .build()
+            );
+            clientCategory.addEntry(
+                    entryBuilder.startIntField(
+                                    Text.literal("ポイントのアニメーション時間(ミリ秒)"), clientConfig.pointAnimationTimeMillis()
+                            )
+                            .setDefaultValue(clientDefaultConfig.comboContinueTimeMillis())
+                            .setMin(0)
+                            .setSaveConsumer(pointAnimationMillis::set)
                             .build()
             );
 
@@ -52,7 +62,7 @@ public class ModMenuIntegration implements ModMenuApi {
             }
 
             builder.setSavingRunnable(() -> {
-                var newClientConfig = new ClientConfig(comboContinueTimeMillis.get());
+                var newClientConfig = new ClientConfig(comboContinueTimeMillis.get(), pointAnimationMillis.get());
                 setClientConfig(newClientConfig);
 
                 if (isInGame()) {
