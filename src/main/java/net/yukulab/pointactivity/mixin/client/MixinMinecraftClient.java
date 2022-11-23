@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.yukulab.pointactivity.config.ClientConfig;
 import net.yukulab.pointactivity.config.ConfigIO;
+import net.yukulab.pointactivity.config.ServerConfig;
 import net.yukulab.pointactivity.extension.ClientConfigHolder;
 import net.yukulab.pointactivity.extension.ModLoadedFlagHolder;
 import net.yukulab.pointactivity.extension.PointHolder;
@@ -18,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient implements ModLoadedFlagHolder, PointHolder, ClientConfigHolder {
+public abstract class MixinMinecraftClient
+        implements ModLoadedFlagHolder, PointHolder, ClientConfigHolder {
     private boolean connectedModdedServer;
     private ClientPointContainer pointContainer;
 
@@ -28,6 +30,8 @@ public abstract class MixinMinecraftClient implements ModLoadedFlagHolder, Point
                 ConfigIO.writeConfig(config);
                 return config;
             });
+
+    private ServerConfig serverConfig;
 
     /**
      * @return 本MODが導入されたサーバーに接続してるかどうか
@@ -51,16 +55,26 @@ public abstract class MixinMinecraftClient implements ModLoadedFlagHolder, Point
     }
 
     @Override
-    public ClientConfig pointactivity$getConfig() {
+    public ClientConfig pointactivity$getClientConfig() {
         return clientConfig;
     }
 
     @Override
-    public void pointactivity$setConfig(@NotNull ClientConfig config) {
+    public void pointactivity$setClientConfig(@NotNull ClientConfig config) {
         if (!config.equals(this.clientConfig)) {
             this.clientConfig = config;
             ConfigIO.writeConfig(config);
         }
+    }
+
+    @Override
+    public Optional<ServerConfig> pointactivity$getServerConfig() {
+        return Optional.ofNullable(serverConfig);
+    }
+
+    @Override
+    public void pointactivity$setServerConfig(@NotNull ServerConfig config) {
+        serverConfig = config;
     }
 
     @Override
@@ -90,5 +104,13 @@ public abstract class MixinMinecraftClient implements ModLoadedFlagHolder, Point
     )
     private void resetModFlag(CallbackInfo ci) {
         connectedModdedServer = false;
+    }
+
+    @Inject(
+            method = "disconnect()V",
+            at = @At("RETURN")
+    )
+    private void resetServerConfig(CallbackInfo ci) {
+        serverConfig = null;
     }
 }

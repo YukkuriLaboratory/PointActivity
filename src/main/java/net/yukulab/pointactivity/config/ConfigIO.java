@@ -25,7 +25,7 @@ public class ConfigIO {
 
     public static <T> void writeConfig(T config) {
         var json = GSON.toJson(config);
-        try (var writer = new FileWriter(CONFIG_FILE, false)) {
+        try (var writer = new FileWriter(getConfigFile(config.getClass()), false)) {
             writer.write(json);
         } catch (IOException e) {
             PointActivity.LOGGER.error("Failed to write config", e);
@@ -33,7 +33,7 @@ public class ConfigIO {
     }
 
     public static <T> Optional<T> readConfig(Class<T> targetObject) {
-        try (var reader = new FileReader(CONFIG_FILE)) {
+        try (var reader = new FileReader(getConfigFile(targetObject))) {
             var config = GSON.fromJson(reader, targetObject);
             return Optional.of(config);
         } catch (FileNotFoundException ignored) {
@@ -42,5 +42,18 @@ public class ConfigIO {
             PointActivity.LOGGER.error("Failed to load config", e);
         }
         return Optional.empty();
+    }
+
+    private static <T> File getConfigFile(Class<T> targetObject) {
+        var builder = new StringBuilder().append("PointActivity");
+        if (targetObject.equals(ClientConfig.class)) {
+            builder.append("_client");
+        } else if (targetObject.equals(ServerConfig.class)) {
+            builder.append("_server");
+        } else {
+            builder.append("_unknown");
+        }
+        builder.append(".json");
+        return new File(FabricLoader.getInstance().getConfigDir().toFile(), builder.toString());
     }
 }
