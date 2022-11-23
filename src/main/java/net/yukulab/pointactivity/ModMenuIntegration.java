@@ -11,7 +11,6 @@ import net.yukulab.pointactivity.network.packet.play.SendServerConfigBothPacket;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ModMenuIntegration implements ModMenuApi {
     @Override
@@ -48,15 +47,25 @@ public class ModMenuIntegration implements ModMenuApi {
 
             var serverDefaultConfig = ServerConfig.getAsDefault();
             var optionalServerConfig = getServerConfig();
-            AtomicReference<String> dummy = new AtomicReference<>();
+            AtomicInteger moveHoriPointPer = new AtomicInteger();
+            AtomicInteger moveVertPointPer = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
-                dummy.set(serverConfig.dummy());
+                moveHoriPointPer.set(serverConfig.moveHorizontalPointPer());
+                moveVertPointPer.set(serverConfig.moveVerticalPointPer());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
                 serverCategory.addEntry(
-                        entryBuilder.startStrField(Text.literal("Dummy"), dummy.get())
-                                .setDefaultValue(serverDefaultConfig.dummy())
-                                .setSaveConsumer(dummy::set)
+                        entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動可能距離(cm)"), moveHoriPointPer.get())
+                                .setTooltip(Text.literal("note: 1ブロック=100cm"))
+                                .setDefaultValue(serverDefaultConfig.moveHorizontalPointPer())
+                                .setSaveConsumer(moveHoriPointPer::set)
+                                .build()
+                );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1ポイントあたりの垂直移動可能距離(cm)"), moveHoriPointPer.get())
+                                .setTooltip(Text.literal("note: 1ブロック=100cm"))
+                                .setDefaultValue(serverDefaultConfig.moveVerticalPointPer())
+                                .setSaveConsumer(moveVertPointPer::set)
                                 .build()
                 );
             }
@@ -66,7 +75,7 @@ public class ModMenuIntegration implements ModMenuApi {
                 setClientConfig(newClientConfig);
 
                 if (isInGame()) {
-                    var newServerConfig = new ServerConfig(dummy.get());
+                    var newServerConfig = new ServerConfig(moveHoriPointPer.get(), moveVertPointPer.get());
                     SendServerConfigBothPacket.send(newServerConfig);
                 } else if (optionalServerConfig.isPresent()) {
                     PointActivity.LOGGER.warn("Failed to apply ServerConfig", new RuntimeException("Connection lost."));
