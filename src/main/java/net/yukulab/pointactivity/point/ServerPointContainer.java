@@ -24,7 +24,9 @@ public class ServerPointContainer extends PointContainer {
         super.setPoint(point);
         if (point != currentPoint) {
             currentPoint = point;
-            sendUpdatePacket();
+            if (player.networkHandler != null) {
+                sendUpdatePacket();
+            }
         }
     }
 
