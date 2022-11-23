@@ -54,7 +54,7 @@ public class HandShakeS2CPacket {
             PacketByteBuf buf,
             Consumer<GenericFutureListener<? extends Future<? super Void>>> genericFutureListenerConsumer
     ) {
-        MinecraftClient.getInstance().pointactivity$onModLoaded();
+        client.pointactivity$onModLoaded();
         return CompletableFuture.completedFuture(PacketByteBufs.empty());
     }
 }
