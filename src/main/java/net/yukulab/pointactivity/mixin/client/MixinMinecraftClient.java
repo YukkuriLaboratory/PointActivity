@@ -5,6 +5,7 @@ import net.minecraft.client.RunArgs;
 import net.yukulab.pointactivity.config.ClientConfig;
 import net.yukulab.pointactivity.config.ConfigIO;
 import net.yukulab.pointactivity.extension.ClientConfigHolder;
+import net.yukulab.pointactivity.extension.ModLoadedFlagHolder;
 import net.yukulab.pointactivity.extension.PointHolder;
 import net.yukulab.pointactivity.point.ClientPointContainer;
 import net.yukulab.pointactivity.point.PointContainer;
@@ -17,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraftClient implements PointHolder, ClientConfigHolder {
+public abstract class MixinMinecraftClient implements ModLoadedFlagHolder, PointHolder, ClientConfigHolder {
+    private boolean connectedModdedServer;
     private ClientPointContainer pointContainer;
 
     private ClientConfig clientConfig =
@@ -26,6 +28,14 @@ public abstract class MixinMinecraftClient implements PointHolder, ClientConfigH
                 ConfigIO.writeConfig(config);
                 return config;
             });
+
+    /**
+     * @return 本MODが導入されたサーバーに接続してるかどうか
+     */
+    @Override
+    public boolean pointactivity$isModLoaded() {
+        return connectedModdedServer;
+    }
 
     @Override
     public Optional<PointContainer> pointactivity$getPointContainer() {
@@ -53,6 +63,11 @@ public abstract class MixinMinecraftClient implements PointHolder, ClientConfigH
         }
     }
 
+    @Override
+    public void pointactivity$onModLoaded() {
+        connectedModdedServer = true;
+    }
+
     @Inject(
             method = "<init>",
             at = @At("RETURN")
@@ -67,5 +82,13 @@ public abstract class MixinMinecraftClient implements PointHolder, ClientConfigH
     )
     private void tickPointContainer(CallbackInfo ci) {
         pointContainer.tick();
+    }
+
+    @Inject(
+            method = "disconnect()V",
+            at = @At("RETURN")
+    )
+    private void resetModFlag(CallbackInfo ci) {
+        connectedModdedServer = false;
     }
 }

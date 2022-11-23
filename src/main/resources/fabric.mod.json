@@ -39,6 +39,7 @@
         "net/yukulab/pointactivity/extension/PointHolder"
       ],
       "net/minecraft/class_310": [
+        "net/yukulab/pointactivity/extension/ModLoadedFlagHolder",
         "net/yukulab/pointactivity/extension/PointHolder",
         "net/yukulab/pointactivity/extension/ClientConfigHolder"
       ]
