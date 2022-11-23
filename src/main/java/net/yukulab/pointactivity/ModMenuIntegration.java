@@ -30,7 +30,7 @@ public class ModMenuIntegration implements ModMenuApi {
 
             var clientCategory = builder.getOrCreateCategory(Text.literal("Client"));
             clientCategory.addEntry(
-                    entryBuilder.startIntField(Text.literal("Combo継続時間(ミリ秒)"), clientConfig.comboContinueTimeMillis())
+                    entryBuilder.startIntField(Text.literal("コンボの継続時間(ミリ秒)"), clientConfig.comboContinueTimeMillis())
                             .setDefaultValue(clientDefaultConfig.comboContinueTimeMillis())
                             .setMin(0)
                             .setSaveConsumer(comboContinueTimeMillis::set)
