@@ -50,11 +50,15 @@ public class ModMenuIntegration implements ModMenuApi {
             var moveHoriPointPer = new AtomicInteger();
             var moveVertPointPer = new AtomicInteger();
             var craftPoint = new AtomicInteger();
+            var swingPoint = new AtomicInteger();
+            var attackPoint = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
                 moveHoriPointPer.set(serverConfig.moveHorizontalPointPer());
                 moveVertPointPer.set(serverConfig.moveVerticalPointPer());
                 craftPoint.set(serverConfig.craftPoint());
+                swingPoint.set(serverConfig.swingHandPoint());
+                attackPoint.set(serverConfig.attackPoint());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
                 serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動可能距離(cm)"), moveHoriPointPer.get())
@@ -76,6 +80,19 @@ public class ModMenuIntegration implements ModMenuApi {
                                 .setSaveConsumer(craftPoint::set)
                                 .build()
                 );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1振りあたりのポイント消費量"), swingPoint.get())
+                                .setDefaultValue(serverDefaultConfig.swingHandPoint())
+                                .setSaveConsumer(swingPoint::set)
+                                .build()
+                );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1攻撃あたりのポイント消費量"), attackPoint.get())
+                                .setTooltip(Text.literal("注意:振りによるポイント消費も加算されます"))
+                                .setDefaultValue(serverDefaultConfig.attackPoint())
+                                .setSaveConsumer(attackPoint::set)
+                                .build()
+                );
             }
 
             builder.setSavingRunnable(() -> {
@@ -86,7 +103,9 @@ public class ModMenuIntegration implements ModMenuApi {
                     var newServerConfig = new ServerConfig(
                             moveHoriPointPer.get(),
                             moveVertPointPer.get(),
-                            craftPoint.get()
+                            craftPoint.get(),
+                            swingPoint.get(),
+                            attackPoint.get()
                     );
                     SendServerConfigBothPacket.send(newServerConfig);
                 } else if (optionalServerConfig.isPresent()) {

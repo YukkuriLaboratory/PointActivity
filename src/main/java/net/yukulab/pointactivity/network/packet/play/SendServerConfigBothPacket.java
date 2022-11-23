@@ -62,10 +62,18 @@ public class SendServerConfigBothPacket {
         buf.writeInt(config.moveHorizontalPointPer());
         buf.writeInt(config.moveVerticalPointPer());
         buf.writeInt(config.craftPoint());
+        buf.writeInt(config.swingHandPoint());
+        buf.writeInt(config.attackPoint());
         return buf;
     }
 
     private static ServerConfig readConfig(PacketByteBuf buf) {
-        return new ServerConfig(buf.readInt(), buf.readInt(), buf.readInt());
+        return new ServerConfig(
+                buf.readInt(),
+                buf.readInt(),
+                buf.readInt(),
+                buf.readInt(),
+                buf.readInt()
+        );
     }
 }
