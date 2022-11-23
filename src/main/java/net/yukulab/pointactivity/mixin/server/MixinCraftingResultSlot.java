@@ -21,6 +21,7 @@ public class MixinCraftingResultSlot {
     @Final
     private PlayerEntity player;
 
+    @SuppressWarnings("checkstyle:LineLength")
     @Inject(
             method = "onCrafted(Lnet/minecraft/item/ItemStack;)V",
             at = @At(
