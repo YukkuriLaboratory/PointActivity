@@ -2,6 +2,11 @@
 
 運動量をカウントするためのFabricMod
 
+# 前提MOD
+
+- [ModMenu](https://modrinth.com/mod/modmenu)
+- [Cloth Config](https://modrinth.com/mod/cloth-config)
+
 # 開発ルール
 
 - コミットメッセージやPRのタイトルは先頭に変更内容と合致する[gitmoji](https://gitmoji.dev)を付けてください(IDEAには[拡張機能](https://plugins.jetbrains.com/plugin/12383-gitmoji-plus-commit-button)もあります)

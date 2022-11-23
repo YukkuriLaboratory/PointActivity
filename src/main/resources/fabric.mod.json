@@ -10,10 +10,16 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.yukulab.pointactivity.client.PointActivityClient"
+      "net.yukulab.pointactivity.PointActivityClient"
+    ],
+    "server": [
+      "net.yukulab.pointactivity.PointActivityServer"
     ],
     "main": [
       "net.yukulab.pointactivity.PointActivity"
+    ],
+    "modmenu": [
+      "net.yukulab.pointactivity.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -23,5 +29,23 @@
     "fabricloader": ">=0.14.10",
     "fabric": "*",
     "minecraft": "1.19.2"
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_2535": [
+        "net/yukulab/pointactivity/extension/ModLoadedFlagHolder"
+      ],
+      "net/minecraft/class_3222": [
+        "net/yukulab/pointactivity/extension/PointHolder"
+      ],
+      "net/minecraft/class_310": [
+        "net/yukulab/pointactivity/extension/ModLoadedFlagHolder",
+        "net/yukulab/pointactivity/extension/PointHolder",
+        "net/yukulab/pointactivity/extension/ClientConfigHolder"
+      ],
+      "net/minecraft/class_3176": [
+        "net/yukulab/pointactivity/extension/ServerConfigHolder"
+      ]
+    }
   }
 }
