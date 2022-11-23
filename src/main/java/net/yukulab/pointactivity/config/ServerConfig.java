@@ -4,8 +4,8 @@ import com.google.gson.annotations.JsonAdapter;
 import marcono1234.gson.recordadapter.RecordTypeAdapterFactory;
 
 @JsonAdapter(RecordTypeAdapterFactory.class)
-public record ServerConfig(String dummy) {
+public record ServerConfig(int moveHorizontalPointPer, int moveVerticalPointPer) {
     public static ServerConfig getAsDefault() {
-        return new ServerConfig("dummy");
+        return new ServerConfig(100, 250);
     }
 }

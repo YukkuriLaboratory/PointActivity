@@ -10,6 +10,7 @@
   "server": [
     "server.MixinClientConnection",
     "server.MixinMinecraftDedicatedServer",
+    "server.MixinPlayerEntity",
     "server.MixinPlayerManager",
     "server.MixinServerPlayerEntity"
   ],
