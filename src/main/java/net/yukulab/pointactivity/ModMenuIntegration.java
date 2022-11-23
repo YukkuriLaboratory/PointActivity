@@ -47,12 +47,14 @@ public class ModMenuIntegration implements ModMenuApi {
 
             var serverDefaultConfig = ServerConfig.getAsDefault();
             var optionalServerConfig = getServerConfig();
-            AtomicInteger moveHoriPointPer = new AtomicInteger();
-            AtomicInteger moveVertPointPer = new AtomicInteger();
+            var moveHoriPointPer = new AtomicInteger();
+            var moveVertPointPer = new AtomicInteger();
+            var craftPoint = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
                 moveHoriPointPer.set(serverConfig.moveHorizontalPointPer());
                 moveVertPointPer.set(serverConfig.moveVerticalPointPer());
+                craftPoint.set(serverConfig.craftPoint());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
                 serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動可能距離(cm)"), moveHoriPointPer.get())
@@ -68,6 +70,12 @@ public class ModMenuIntegration implements ModMenuApi {
                                 .setSaveConsumer(moveVertPointPer::set)
                                 .build()
                 );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1クラフトあたりのポイント消費量"), craftPoint.get())
+                                .setDefaultValue(serverDefaultConfig.craftPoint())
+                                .setSaveConsumer(craftPoint::set)
+                                .build()
+                );
             }
 
             builder.setSavingRunnable(() -> {
@@ -75,7 +83,11 @@ public class ModMenuIntegration implements ModMenuApi {
                 setClientConfig(newClientConfig);
 
                 if (isInGame()) {
-                    var newServerConfig = new ServerConfig(moveHoriPointPer.get(), moveVertPointPer.get());
+                    var newServerConfig = new ServerConfig(
+                            moveHoriPointPer.get(),
+                            moveVertPointPer.get(),
+                            craftPoint.get()
+                    );
                     SendServerConfigBothPacket.send(newServerConfig);
                 } else if (optionalServerConfig.isPresent()) {
                     PointActivity.LOGGER.warn("Failed to apply ServerConfig", new RuntimeException("Connection lost."));

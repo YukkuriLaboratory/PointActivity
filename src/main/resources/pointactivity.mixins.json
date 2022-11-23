@@ -9,6 +9,7 @@
   ],
   "server": [
     "server.MixinClientConnection",
+    "server.MixinCraftingResultSlot",
     "server.MixinMinecraftDedicatedServer",
     "server.MixinPlayerEntity",
     "server.MixinPlayerManager",
