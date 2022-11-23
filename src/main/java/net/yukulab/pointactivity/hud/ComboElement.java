@@ -5,7 +5,7 @@ import net.minecraft.text.Text;
 import net.yukulab.pointactivity.point.ClientPointContainer;
 
 public class ComboElement extends HudElement {
-    public static ComboElement INSTANCE = new ComboElement();
+    public static final ComboElement INSTANCE = new ComboElement();
 
     private ComboElement() {
         visible = false;

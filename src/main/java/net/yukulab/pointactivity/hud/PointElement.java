@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 public class PointElement extends HudElement {
-    public static PointElement INSTANCE = new PointElement();
+    public static final PointElement INSTANCE = new PointElement();
 
     private float displayedPoint = -1;
     private int targetPoint;

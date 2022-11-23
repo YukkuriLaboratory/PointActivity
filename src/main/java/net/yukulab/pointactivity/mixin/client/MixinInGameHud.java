@@ -25,12 +25,18 @@ public abstract class MixinInGameHud {
     )
     private void renderModElements(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         // Check F3 mode
-        if (client.options.debugEnabled) return;
+        if (client.options.debugEnabled) {
+            return;
+        }
 
-        if (client.pointactivity$getServerConfig().isEmpty()) return;
+        if (client.pointactivity$getServerConfig().isEmpty()) {
+            return;
+        }
 
         Lists.newArrayList(PointElement.INSTANCE, ComboElement.INSTANCE).forEach(element -> {
-            if (element.visible) element.render(matrices);
+            if (element.visible) {
+                element.render(matrices);
+            }
         });
     }
 }

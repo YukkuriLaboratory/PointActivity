@@ -20,7 +20,7 @@ public class ModMenuIntegration implements ModMenuApi {
             var clientDefaultConfig = ClientConfig.getAsDefault();
             var clientConfig = getClientConfig();
             var comboContinueTimeMillis = new AtomicInteger(clientConfig.comboContinueTimeMillis());
-            var pointAnimationTick = new AtomicInteger(clientConfig.pointAnimationTimeMillis());
+            var pointAnimationMillis = new AtomicInteger(clientConfig.pointAnimationTimeMillis());
 
             var builder = ConfigBuilder.create()
                     .setParentScreen(parent)
@@ -37,10 +37,12 @@ public class ModMenuIntegration implements ModMenuApi {
                             .build()
             );
             clientCategory.addEntry(
-                    entryBuilder.startIntField(Text.literal("ポイントのアニメーション時間(ミリ秒)"), clientConfig.pointAnimationTimeMillis())
+                    entryBuilder.startIntField(
+                                    Text.literal("ポイントのアニメーション時間(ミリ秒)"), clientConfig.pointAnimationTimeMillis()
+                            )
                             .setDefaultValue(clientDefaultConfig.comboContinueTimeMillis())
                             .setMin(0)
-                            .setSaveConsumer(pointAnimationTick::set)
+                            .setSaveConsumer(pointAnimationMillis::set)
                             .build()
             );
 
@@ -60,7 +62,7 @@ public class ModMenuIntegration implements ModMenuApi {
             }
 
             builder.setSavingRunnable(() -> {
-                var newClientConfig = new ClientConfig(comboContinueTimeMillis.get(), pointAnimationTick.get());
+                var newClientConfig = new ClientConfig(comboContinueTimeMillis.get(), pointAnimationMillis.get());
                 setClientConfig(newClientConfig);
 
                 if (isInGame()) {
