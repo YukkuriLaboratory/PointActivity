@@ -2,6 +2,7 @@ package net.yukulab.pointactivity.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import marcono1234.gson.recordadapter.RecordTypeAdapterFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.yukulab.pointactivity.PointActivity;
 
@@ -17,9 +18,10 @@ public class ConfigIO {
         throw new UnsupportedOperationException("Do not create this class instance");
     }
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final File CONFIG_FILE =
-            new File(FabricLoader.getInstance().getConfigDir().toFile(), "PointActivity.json");
+    private static final Gson GSON =
+            new GsonBuilder().registerTypeAdapterFactory(RecordTypeAdapterFactory.DEFAULT)
+                    .setPrettyPrinting()
+                    .create();
 
     public static <T> void writeConfig(T config) {
         var json = GSON.toJson(config);

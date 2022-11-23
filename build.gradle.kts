@@ -15,6 +15,14 @@ repositories {
     // for more information about repositories.
     maven("https://maven.shedaniel.me/")
     maven("https://maven.terraformersmc.com/releases/")
+    exclusiveContent {
+        forRepository {
+            maven("https://jitpack.io")
+        }
+        filter {
+            includeModule("com.github.Marcono1234", "gson-record-type-adapter-factory")
+        }
+    }
 }
 
 dependencies {
@@ -29,6 +37,8 @@ dependencies {
         exclude("net.fabricmc.fabric-api")
     }
     modApi("com.terraformersmc:modmenu:4.1.1")
+
+    modApi(include("com.github.Marcono1234:gson-record-type-adapter-factory:0.3.0")!!)
 }
 
 tasks.processResources {
