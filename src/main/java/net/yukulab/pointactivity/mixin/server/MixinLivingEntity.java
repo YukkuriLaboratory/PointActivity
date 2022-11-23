@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 @Environment(EnvType.SERVER)
 public abstract class MixinLivingEntity {
+    @SuppressWarnings("checkstyle:LineLength")
     @Inject(
             method = "swingHand(Lnet/minecraft/util/Hand;Z)V",
             at = @At(
