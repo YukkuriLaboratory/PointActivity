@@ -25,7 +25,19 @@ public class PointElement extends HudElement {
     @Override
     Text getText() {
         return getDisplayPoint()
-                .map(point -> Text.literal("Point: " + point))
+                .map(point -> {
+                    var number = Text.literal(Integer.toString(point));
+                    Formatting color;
+                    if (point > 500) {
+                        color = Formatting.GREEN;
+                    } else if (point > 100) {
+                        color = Formatting.YELLOW;
+                    } else {
+                        color = Formatting.RED;
+                    }
+                    number.setStyle(Style.EMPTY.withColor(color));
+                    return Text.literal("Point: ").append(number);
+                })
                 .orElse(Text
                         .literal("Point: ")
                         .append(Text
