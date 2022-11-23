@@ -15,7 +15,9 @@ public class ClientPointContainer extends PointContainer {
 
     public void tick() {
         var now = Instant.now();
-        var continueTimeMillis = MinecraftClient.getInstance().pointactivity$getClientConfig().comboContinueTimeMillis();
+        var continueTimeMillis = MinecraftClient.getInstance()
+                .pointactivity$getClientConfig()
+                .comboContinueTimeMillis();
         if (currentCombo != 0 && Duration.between(lastComboTime, now).toMillis() > continueTimeMillis) {
             subtractPoint(currentCombo);
             currentCombo = 0;
