@@ -23,6 +23,10 @@ public abstract class MixinPlayerEntity {
     )
     private void consumeWalkPoint(double dx, double dy, double dz, CallbackInfo ci) {
         var player = (PlayerEntity) (Object) this;
+        if (player.hasVehicle()) {
+            return;
+        }
+
         if (player instanceof ServerPlayerEntity serverPlayerEntity) {
             var server = (MinecraftDedicatedServer) serverPlayerEntity.server;
 
