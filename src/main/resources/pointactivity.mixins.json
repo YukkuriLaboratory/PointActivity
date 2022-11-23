@@ -4,6 +4,7 @@
   "package": "net.yukulab.pointactivity.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.MixinInGameHud",
     "client.MixinMinecraftClient"
   ],
   "server": [
