@@ -9,6 +9,7 @@ import net.yukulab.pointactivity.network.Networking;
 public class PointActivityServer implements DedicatedServerModInitializer {
     @Override
     public void onInitializeServer() {
+        Commands.registerForServer();
         Networking.registerServerReceivers();
     }
 }
