@@ -34,8 +34,8 @@ public class ConfigIO {
         try (var reader = new FileReader(CONFIG_FILE)) {
             var config = GSON.fromJson(reader, targetObject);
             return Optional.of(config);
-        } catch (FileNotFoundException e) {
-            PointActivity.LOGGER.warn("Config file not found. Load default data", e);
+        } catch (FileNotFoundException ignored) {
+            PointActivity.LOGGER.warn("Config file not found. Load default data");
         } catch (IOException e) {
             PointActivity.LOGGER.error("Failed to load config", e);
         }
