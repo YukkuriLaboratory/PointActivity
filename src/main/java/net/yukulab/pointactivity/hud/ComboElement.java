@@ -12,7 +12,6 @@ public class ComboElement extends HudElement {
     public static final ComboElement INSTANCE = new ComboElement();
 
     private ComboElement() {
-        visible = false;
         y = 21;
     }
 

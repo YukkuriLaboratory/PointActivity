@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.yukulab.pointactivity.hud.ComboElement;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,7 +25,6 @@ public class ClientPointContainer extends PointContainer {
         if (currentCombo != 0 && Duration.between(lastComboTime, now).toMillis() > continueTimeMillis) {
             subtractPoint(currentCombo);
             currentCombo = 0;
-            ComboElement.INSTANCE.visible = false;
             latestReasonCache = reasonCache;
         }
     }
@@ -36,7 +34,6 @@ public class ClientPointContainer extends PointContainer {
         super.setPoint(point);
         currentCombo = currentPoint - point;
         lastComboTime = Instant.now();
-        ComboElement.INSTANCE.visible = point != 0;
     }
 
     public void updateReasonCache(Map<PointReason, Integer> newCache) {
@@ -45,12 +42,12 @@ public class ClientPointContainer extends PointContainer {
 
     public Map<PointReason, Integer> getCacheDiff() {
         Map<PointReason, Integer> result = Maps.newHashMap();
-        latestReasonCache.forEach((reason, amount) -> {
-            var currentAmount = reasonCache.getOrDefault(reason, 0) - amount;
+        reasonCache.forEach(((reason, amount) -> {
+            var currentAmount = amount - latestReasonCache.getOrDefault(reason, 0);
             if (currentAmount > 0) {
                 result.put(reason, currentAmount);
             }
-        });
+        }));
         return result;
     }
 }
