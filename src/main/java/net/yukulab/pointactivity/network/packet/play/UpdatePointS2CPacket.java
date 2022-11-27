@@ -10,6 +10,10 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.network.Networking;
+import net.yukulab.pointactivity.point.ClientPointContainer;
+import net.yukulab.pointactivity.point.PointReason;
+
+import java.util.Map;
 
 public class UpdatePointS2CPacket {
     protected UpdatePointS2CPacket() {
@@ -17,9 +21,10 @@ public class UpdatePointS2CPacket {
     }
 
     @Environment(EnvType.SERVER)
-    public static void send(ServerPlayerEntity player, int currentPoint) {
+    public static void send(ServerPlayerEntity player, int currentPoint, Map<PointReason, Integer> pointCache) {
         var buf = PacketByteBufs.create();
         buf.writeInt(currentPoint);
+        buf.writeMap(pointCache, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);
         ServerPlayNetworking.send(player, Networking.UPDATE_POINT, buf);
     }
 
@@ -31,6 +36,11 @@ public class UpdatePointS2CPacket {
             PacketSender responseSender
     ) {
         var currentPoint = buf.readInt();
-        client.pointactivity$getPointContainer().ifPresent(container -> container.setPoint(currentPoint));
+        var currentPointCache =
+                buf.readMap(keyReader -> keyReader.readEnumConstant(PointReason.class), PacketByteBuf::readInt);
+        client.pointactivity$getPointContainer().ifPresent(container -> {
+            container.setPoint(currentPoint);
+            ((ClientPointContainer) container).updateReasonCache(currentPointCache);
+        });
     }
 }

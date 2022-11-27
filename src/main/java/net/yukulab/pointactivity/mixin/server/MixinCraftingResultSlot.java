@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.yukulab.pointactivity.point.PointReason;
+import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,7 +36,9 @@ public class MixinCraftingResultSlot {
             var server = (MinecraftDedicatedServer) serverPlayer.server;
             var craftPoint = server.pointactivity$getServerConfig().craftPoint();
             serverPlayer.pointactivity$getPointContainer()
-                    .ifPresent(container -> container.subtractPoint(craftPoint));
+                    .ifPresent(container ->
+                            ((ServerPointContainer) container).subtractPoint(craftPoint, PointReason.CRAFT)
+                    );
         }
     }
 }

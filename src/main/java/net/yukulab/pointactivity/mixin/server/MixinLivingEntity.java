@@ -7,6 +7,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
+import net.yukulab.pointactivity.point.PointReason;
+import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +31,9 @@ public abstract class MixinLivingEntity {
             var server = ((MinecraftDedicatedServer) player.server);
             var swingPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
-                    .ifPresent(container -> container.subtractPoint(swingPoint));
+                    .ifPresent(container ->
+                            ((ServerPointContainer) container).subtractPoint(swingPoint, PointReason.SWING)
+                    );
         }
     }
 
@@ -43,7 +47,9 @@ public abstract class MixinLivingEntity {
             var server = ((MinecraftDedicatedServer) player.server);
             var attackPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
-                    .ifPresent(container -> container.subtractPoint(attackPoint));
+                    .ifPresent(container ->
+                            ((ServerPointContainer) container).subtractPoint(attackPoint, PointReason.ATTACK)
+                    );
         }
     }
 }

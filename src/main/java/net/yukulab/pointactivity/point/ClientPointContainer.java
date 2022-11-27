@@ -7,6 +7,7 @@ import net.yukulab.pointactivity.hud.ComboElement;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ClientPointContainer extends PointContainer {
@@ -36,5 +37,9 @@ public class ClientPointContainer extends PointContainer {
         currentCombo = currentPoint - point;
         lastComboTime = Instant.now();
         ComboElement.INSTANCE.visible = point != 0;
+    }
+
+    public void updateReasonCache(Map<PointReason, Integer> newCache) {
+        reasonCache = newCache;
     }
 }

@@ -6,6 +6,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.PointActivity;
+import net.yukulab.pointactivity.point.PointReason;
+import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,7 +40,9 @@ public abstract class MixinPlayerEntity {
                 if (moveCmHolder > moveHoriPointPer) {
                     var walkedPoint = moveCmHolder / moveHoriPointPer;
                     serverPlayerEntity.pointactivity$getPointContainer()
-                            .ifPresent(container -> container.subtractPoint(walkedPoint));
+                            .ifPresent(container ->
+                                    ((ServerPointContainer) container).subtractPoint(walkedPoint, PointReason.MOVE)
+                            );
                     moveCmHolder %= moveHoriPointPer;
                 }
             }
@@ -49,7 +53,9 @@ public abstract class MixinPlayerEntity {
                 if (climbCmHolder > moveVertPointPer) {
                     var climbedPoint = climbCmHolder / moveVertPointPer;
                     serverPlayerEntity.pointactivity$getPointContainer()
-                            .ifPresent(container -> container.subtractPoint(climbedPoint));
+                            .ifPresent(container ->
+                                    ((ServerPointContainer) container).subtractPoint(climbedPoint, PointReason.MOVE)
+                            );
                     climbCmHolder %= moveVertPointPer;
                 }
             }
