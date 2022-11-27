@@ -40,7 +40,7 @@ public class ComboElement extends HudElement {
 
         int amountCombo;
 
-        public Combo(PointReason reason, int amount) {
+        Combo(PointReason reason, int amount) {
             pointReason = reason;
             amountCombo = amount;
         }
