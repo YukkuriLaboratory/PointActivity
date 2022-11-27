@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Items;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -17,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 @Environment(EnvType.SERVER)
 public abstract class MixinLivingEntity {
+    private int currentBowUseTick;
+
     @SuppressWarnings("checkstyle:LineLength")
     @Inject(
             method = "swingHand(Lnet/minecraft/util/Hand;Z)V",
@@ -50,6 +53,40 @@ public abstract class MixinLivingEntity {
                     .ifPresent(container ->
                             ((ServerPointContainer) container).subtractPoint(attackPoint, PointReason.ATTACK)
                     );
+        }
+    }
+
+    @Inject(
+            method = "tickActiveItemStack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;tickItemStackUsage(Lnet/minecraft/item/ItemStack;)V"
+            )
+    )
+    private void handleBowUse(CallbackInfo ci) {
+        var livingEntity = (LivingEntity) (Object) this;
+        if (livingEntity instanceof ServerPlayerEntity player) {
+            var server = ((MinecraftDedicatedServer) player.server);
+            var itemStack = player.getStackInHand(player.getActiveHand());
+            if (itemStack.getItem() == Items.BOW) {
+                player.pointactivity$getPointContainer().ifPresent(container -> {
+                    if (++currentBowUseTick > server.pointactivity$getServerConfig().bowPointPer()) {
+                        ((ServerPointContainer) container).subtractPoint(1, PointReason.BOW);
+                        currentBowUseTick = 0;
+                    }
+                });
+            }
+        }
+    }
+
+    @Inject(
+            method = "consumeItem",
+            at = @At("RETURN")
+    )
+    private void resetItemUseItem(CallbackInfo ci) {
+        var entity = (LivingEntity) (Object) this;
+        if (!entity.isUsingItem() && currentBowUseTick > 0) {
+            currentBowUseTick = 0;
         }
     }
 }

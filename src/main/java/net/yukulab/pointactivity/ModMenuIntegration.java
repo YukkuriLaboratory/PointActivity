@@ -52,6 +52,7 @@ public class ModMenuIntegration implements ModMenuApi {
             var craftPoint = new AtomicInteger();
             var swingPoint = new AtomicInteger();
             var attackPoint = new AtomicInteger();
+            var bowPoint = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
                 moveHoriPointPer.set(serverConfig.moveHorizontalPointPer());
@@ -93,6 +94,12 @@ public class ModMenuIntegration implements ModMenuApi {
                                 .setSaveConsumer(attackPoint::set)
                                 .build()
                 );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1ポイントあたりの弓の引き時間(Tick)"), bowPoint.get())
+                                .setDefaultValue(serverDefaultConfig.bowPointPer())
+                                .setSaveConsumer(bowPoint::set)
+                                .build()
+                );
             }
 
             builder.setSavingRunnable(() -> {
@@ -105,7 +112,8 @@ public class ModMenuIntegration implements ModMenuApi {
                             moveVertPointPer.get(),
                             craftPoint.get(),
                             swingPoint.get(),
-                            attackPoint.get()
+                            attackPoint.get(),
+                            bowPoint.get()
                     );
                     SendServerConfigBothPacket.send(newServerConfig);
                 } else if (optionalServerConfig.isPresent()) {

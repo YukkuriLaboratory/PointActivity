@@ -2,6 +2,7 @@ package net.yukulab.pointactivity.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import marcono1234.gson.recordadapter.RecordTypeAdapterFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.yukulab.pointactivity.PointActivity;
@@ -33,13 +34,17 @@ public class ConfigIO {
     }
 
     public static <T> Optional<T> readConfig(Class<T> targetObject) {
-        try (var reader = new FileReader(getConfigFile(targetObject))) {
+        var configFile = getConfigFile(targetObject);
+        try (var reader = new FileReader(configFile)) {
             var config = GSON.fromJson(reader, targetObject);
             return Optional.of(config);
         } catch (FileNotFoundException ignored) {
             PointActivity.LOGGER.warn("Config file not found. Load default data");
         } catch (IOException e) {
             PointActivity.LOGGER.error("Failed to load config", e);
+        } catch (JsonParseException e) {
+            var ignored = configFile.renameTo(new File(configFile.getParent(), configFile.getName() + ".old"));
+            PointActivity.LOGGER.warn("Exists old file. Loads default config.");
         }
         return Optional.empty();
     }

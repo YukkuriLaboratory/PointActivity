@@ -64,11 +64,13 @@ public class SendServerConfigBothPacket {
         buf.writeInt(config.craftPoint());
         buf.writeInt(config.swingHandPoint());
         buf.writeInt(config.attackPoint());
+        buf.writeInt(config.bowPointPer());
         return buf;
     }
 
     private static ServerConfig readConfig(PacketByteBuf buf) {
         return new ServerConfig(
+                buf.readInt(),
                 buf.readInt(),
                 buf.readInt(),
                 buf.readInt(),
