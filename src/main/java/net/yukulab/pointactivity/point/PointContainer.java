@@ -1,8 +1,6 @@
 package net.yukulab.pointactivity.point;
 
 import com.google.common.collect.Maps;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +42,5 @@ public abstract class PointContainer {
 
     public boolean hasPoint() {
         return currentPoint > 0;
-    }
-
-
-    private boolean isClientSide() {
-        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     }
 }
