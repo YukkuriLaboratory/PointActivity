@@ -41,7 +41,7 @@ public abstract class MixinPlayerManager {
                 PointActivity.LOGGER.warn("Unexpected error.", new RuntimeException("Server is not DedicatedServer"));
             }
             player.pointactivity$getPointContainer().ifPresentOrElse(
-                    container -> UpdatePointS2CPacket.send(player, container.getPoint()),
+                    container -> UpdatePointS2CPacket.send(player, container.getPoint(), container.getReasonCache()),
                     () ->
                             PointActivity.LOGGER.warn("Unexpected error.", new RuntimeException("Container is null"))
             );

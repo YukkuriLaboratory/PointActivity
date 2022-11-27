@@ -1,5 +1,6 @@
 package net.yukulab.pointactivity.point;
 
+import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -7,6 +8,7 @@ import net.yukulab.pointactivity.hud.ComboElement;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class ClientPointContainer extends PointContainer {
@@ -14,9 +16,7 @@ public class ClientPointContainer extends PointContainer {
 
     private Instant lastComboTime;
 
-    public int getCurrentCombo() {
-        return currentCombo;
-    }
+    private Map<PointReason, Integer> latestReasonCache = Maps.newHashMap();
 
     public void tick() {
         var now = Instant.now();
@@ -27,6 +27,7 @@ public class ClientPointContainer extends PointContainer {
             subtractPoint(currentCombo);
             currentCombo = 0;
             ComboElement.INSTANCE.visible = false;
+            latestReasonCache = reasonCache;
         }
     }
 
@@ -36,5 +37,20 @@ public class ClientPointContainer extends PointContainer {
         currentCombo = currentPoint - point;
         lastComboTime = Instant.now();
         ComboElement.INSTANCE.visible = point != 0;
+    }
+
+    public void updateReasonCache(Map<PointReason, Integer> newCache) {
+        reasonCache = newCache;
+    }
+
+    public Map<PointReason, Integer> getCacheDiff() {
+        Map<PointReason, Integer> result = Maps.newHashMap();
+        latestReasonCache.forEach((reason, amount) -> {
+            var currentAmount = reasonCache.getOrDefault(reason, 0) - amount;
+            if (currentAmount > 0) {
+                result.put(reason, currentAmount);
+            }
+        });
+        return result;
     }
 }

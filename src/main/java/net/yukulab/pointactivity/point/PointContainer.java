@@ -1,13 +1,17 @@
 package net.yukulab.pointactivity.point;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
+import com.google.common.collect.Maps;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 行動ポイントを保持するクラス
  */
 public abstract class PointContainer {
     protected int currentPoint;
+
+    protected Map<PointReason, Integer> reasonCache = Maps.newHashMap();
 
     public void subtractPoint(int amount) {
         if (currentPoint < amount) {
@@ -27,12 +31,16 @@ public abstract class PointContainer {
         return currentPoint;
     }
 
-    public boolean hasPoint() {
-        return currentPoint > 0;
+    public Map<PointReason, Integer> getReasonCache() {
+        return new HashMap<>(reasonCache);
     }
 
+    public void addReasonPoint(PointReason pointReason, int amount) {
+        var current = reasonCache.getOrDefault(pointReason, 0);
+        reasonCache.put(pointReason, current + amount);
+    }
 
-    private boolean isClientSide() {
-        return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+    public boolean hasPoint() {
+        return currentPoint > 0;
     }
 }
