@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PotionItem;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -21,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinLivingEntity {
     private int currentBowUseTick;
     private int currentFoodUseTick;
+    private int currentPotionUseTick;
 
     @SuppressWarnings("checkstyle:LineLength")
     @Inject(
@@ -96,6 +98,23 @@ public abstract class MixinLivingEntity {
                 if (++currentFoodUseTick > server.pointactivity$getServerConfig().foodPointPer()) {
                     ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
                     currentFoodUseTick = 0;
+                }
+            });
+        }
+    }
+
+    @Inject(
+            method = "tickItemStackUsage",
+            at = @At("HEAD")
+    )
+    private void handlePotionUse(ItemStack stack, CallbackInfo ci) {
+        var livingEntity = (LivingEntity) (Object) this;
+        if (stack.getItem() instanceof PotionItem && livingEntity instanceof ServerPlayerEntity player) {
+            var server = ((MinecraftDedicatedServer) player.server);
+            player.pointactivity$getPointContainer().ifPresent(container -> {
+                if (++currentPotionUseTick > server.pointactivity$getServerConfig().potionPointPer()) {
+                    ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
+                    currentPotionUseTick = 0;
                 }
             });
         }

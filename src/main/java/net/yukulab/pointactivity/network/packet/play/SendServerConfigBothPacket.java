@@ -66,11 +66,13 @@ public class SendServerConfigBothPacket {
         buf.writeInt(config.attackPoint());
         buf.writeInt(config.bowPointPer());
         buf.writeInt(config.foodPointPer());
+        buf.writeInt(config.potionPointPer());
         return buf;
     }
 
     private static ServerConfig readConfig(PacketByteBuf buf) {
         return new ServerConfig(
+                buf.readInt(),
                 buf.readInt(),
                 buf.readInt(),
                 buf.readInt(),
