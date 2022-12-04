@@ -37,6 +37,9 @@ public abstract class PointContainer {
 
     public void addReasonPoint(PointReason pointReason, int amount) {
         var current = reasonCache.getOrDefault(pointReason, 0);
+        if (amount > currentPoint) {
+            amount = currentPoint;
+        }
         reasonCache.put(pointReason, current + amount);
     }
 
