@@ -86,7 +86,9 @@ public abstract class MixinLivingEntity {
             at = @At("HEAD")
     )
     private void handleFoodUse(ItemStack stack, CallbackInfo ci) {
-        if (!stack.getItem().isFood()) return;
+        if (!stack.getItem().isFood()) {
+            return;
+        }
         var livingEntity = (LivingEntity) (Object) this;
         if (livingEntity instanceof ServerPlayerEntity player) {
             var server = ((MinecraftDedicatedServer) player.server);
