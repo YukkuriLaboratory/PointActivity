@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.SERVER)
 public abstract class MixinLivingEntity {
     private int currentBowUseTick;
+    private int currentFoodUseTick;
 
     @SuppressWarnings("checkstyle:LineLength")
     @Inject(
@@ -80,13 +82,34 @@ public abstract class MixinLivingEntity {
     }
 
     @Inject(
+            method = "tickItemStackUsage",
+            at = @At("HEAD")
+    )
+    private void handleFoodUse(ItemStack stack, CallbackInfo ci) {
+        if (!stack.getItem().isFood()) {
+            return;
+        }
+        var livingEntity = (LivingEntity) (Object) this;
+        if (livingEntity instanceof ServerPlayerEntity player) {
+            var server = ((MinecraftDedicatedServer) player.server);
+            player.pointactivity$getPointContainer().ifPresent(container -> {
+                if (++currentFoodUseTick > server.pointactivity$getServerConfig().foodPointPer()) {
+                    ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
+                    currentFoodUseTick = 0;
+                }
+            });
+        }
+    }
+
+    @Inject(
             method = "consumeItem",
             at = @At("RETURN")
     )
     private void resetItemUseItem(CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
-        if (!entity.isUsingItem() && currentBowUseTick > 0) {
+        if (!entity.isUsingItem()) {
             currentBowUseTick = 0;
+            currentFoodUseTick = 0;
         }
     }
 }
