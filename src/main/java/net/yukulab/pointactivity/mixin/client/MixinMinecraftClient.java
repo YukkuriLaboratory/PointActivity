@@ -142,4 +142,15 @@ public abstract class MixinMinecraftClient
             ci.cancel();
         }
     }
+
+    @Inject(
+            method = "doItemUse",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void checkItemUsable(CallbackInfo ci) {
+        if (!pointContainer.hasPoint()) {
+            ci.cancel();
+        }
+    }
 }
