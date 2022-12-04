@@ -36,6 +36,11 @@ public class ClientPointContainer extends PointContainer {
         lastComboTime = Instant.now();
     }
 
+    @Override
+    public boolean hasPoint() {
+        return super.hasPoint() && currentCombo < currentPoint;
+    }
+
     public void updateReasonCache(Map<PointReason, Integer> newCache) {
         reasonCache = newCache;
     }

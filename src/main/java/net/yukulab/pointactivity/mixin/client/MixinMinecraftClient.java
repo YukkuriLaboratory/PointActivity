@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
@@ -112,5 +113,44 @@ public abstract class MixinMinecraftClient
     )
     private void resetServerConfig(CallbackInfo ci) {
         serverConfig = null;
+    }
+
+    @Inject(
+            method = "doAttack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/hit/HitResult;getType()Lnet/minecraft/util/hit/HitResult$Type;"
+            ),
+            cancellable = true
+    )
+    private void checkPoint(CallbackInfoReturnable<Boolean> cir) {
+        if (!pointContainer.hasPoint()) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(
+            method = "handleBlockBreaking",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/hit/HitResult;getType()Lnet/minecraft/util/hit/HitResult$Type;"
+            ),
+            cancellable = true
+    )
+    private void checkBlockBreakable(boolean breaking, CallbackInfo ci) {
+        if (!pointContainer.hasPoint()) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(
+            method = "doItemUse",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void checkItemUsable(CallbackInfo ci) {
+        if (!pointContainer.hasPoint()) {
+            ci.cancel();
+        }
     }
 }
