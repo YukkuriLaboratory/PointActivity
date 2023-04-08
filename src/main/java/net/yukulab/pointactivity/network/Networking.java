@@ -21,7 +21,6 @@ public class Networking {
     public static final Identifier UPDATE_POINT = id("updatepoint");
     public static final Identifier SEND_CONFIG = id("sendconfig");
 
-    @Environment(EnvType.SERVER)
     public static void registerServerReceivers() {
         ServerLoginConnectionEvents.QUERY_START.register(HandShakeS2CPacket::sendQuery);
         ServerLoginNetworking.registerGlobalReceiver(HANDSHAKE, HandShakeS2CPacket::onHandShakeServer);

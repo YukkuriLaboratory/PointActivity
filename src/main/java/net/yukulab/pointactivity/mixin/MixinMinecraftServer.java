@@ -1,7 +1,7 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
-import net.minecraft.server.dedicated.DedicatedPlayerManager;
-import net.minecraft.server.dedicated.MinecraftDedicatedServer;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.yukulab.pointactivity.config.ConfigIO;
 import net.yukulab.pointactivity.config.ServerConfig;
 import net.yukulab.pointactivity.extension.ServerConfigHolder;
@@ -10,10 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(MinecraftDedicatedServer.class)
-public abstract class MixinMinecraftDedicatedServer implements ServerConfigHolder {
+@Mixin(MinecraftServer.class)
+public abstract class MixinMinecraftServer implements ServerConfigHolder {
     @Shadow
-    public abstract DedicatedPlayerManager getPlayerManager();
+    public abstract PlayerManager getPlayerManager();
 
     private ServerConfig serverConfig =
             ConfigIO.readConfig(ServerConfig.class).orElseGet(() -> {

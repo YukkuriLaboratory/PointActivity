@@ -1,13 +1,10 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
-import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.yukulab.pointactivity.point.PointReason;
@@ -18,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-@Environment(EnvType.SERVER)
 public abstract class MixinLivingEntity {
     private int currentBowUseTick;
     private int currentFoodUseTick;
@@ -35,7 +31,7 @@ public abstract class MixinLivingEntity {
     private void consumeSwingHand(Hand hand, boolean fromServerPlayer, CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
         if (entity instanceof ServerPlayerEntity player && hand == Hand.MAIN_HAND) {
-            var server = ((MinecraftDedicatedServer) player.server);
+            var server = player.server;
             var swingPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
@@ -51,7 +47,7 @@ public abstract class MixinLivingEntity {
     private void consumeAttacking(Entity target, CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
         if (entity instanceof ServerPlayerEntity player) {
-            var server = ((MinecraftDedicatedServer) player.server);
+            var server = player.server;
             var attackPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
@@ -70,7 +66,7 @@ public abstract class MixinLivingEntity {
     private void handleBowUse(CallbackInfo ci) {
         var livingEntity = (LivingEntity) (Object) this;
         if (livingEntity instanceof ServerPlayerEntity player) {
-            var server = ((MinecraftDedicatedServer) player.server);
+            var server = player.server;
             var itemStack = player.getStackInHand(player.getActiveHand());
             if (itemStack.getItem() == Items.BOW) {
                 player.pointactivity$getPointContainer().ifPresent(container -> {
@@ -93,7 +89,7 @@ public abstract class MixinLivingEntity {
         }
         var livingEntity = (LivingEntity) (Object) this;
         if (livingEntity instanceof ServerPlayerEntity player) {
-            var server = ((MinecraftDedicatedServer) player.server);
+            var server = player.server;
             player.pointactivity$getPointContainer().ifPresent(container -> {
                 if (++currentFoodUseTick > server.pointactivity$getServerConfig().foodPointPer()) {
                     ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
@@ -110,7 +106,7 @@ public abstract class MixinLivingEntity {
     private void handlePotionUse(ItemStack stack, CallbackInfo ci) {
         var livingEntity = (LivingEntity) (Object) this;
         if (stack.getItem() instanceof PotionItem && livingEntity instanceof ServerPlayerEntity player) {
-            var server = ((MinecraftDedicatedServer) player.server);
+            var server = player.server;
             player.pointactivity$getPointContainer().ifPresent(container -> {
                 if (++currentPotionUseTick > server.pointactivity$getServerConfig().potionPointPer()) {
                     ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);

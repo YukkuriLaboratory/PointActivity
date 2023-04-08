@@ -8,16 +8,16 @@
     "client.MixinInGameHud",
     "client.MixinMinecraftClient"
   ],
-  "server": [
-    "server.MixinClientConnection",
-    "server.MixinCraftingResultSlot",
-    "server.MixinLivingEntity",
-    "server.MixinMinecraftDedicatedServer",
-    "server.MixinPlayerEntity",
-    "server.MixinPlayerManager",
-    "server.MixinServerPlayerEntity"
-  ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "MixinClientConnection",
+    "MixinCraftingResultSlot",
+    "MixinLivingEntity",
+    "MixinMinecraftServer",
+    "MixinPlayerEntity",
+    "MixinPlayerManager",
+    "MixinServerPlayerEntity"
+  ]
 }

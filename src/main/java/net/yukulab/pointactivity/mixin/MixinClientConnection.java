@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
 import net.minecraft.network.ClientConnection;
 import net.yukulab.pointactivity.extension.ModLoadedFlagHolder;

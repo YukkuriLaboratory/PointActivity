@@ -12,9 +12,6 @@
     "client": [
       "net.yukulab.pointactivity.PointActivityClient"
     ],
-    "server": [
-      "net.yukulab.pointactivity.PointActivityServer"
-    ],
     "main": [
       "net.yukulab.pointactivity.PointActivity"
     ],
@@ -43,7 +40,7 @@
         "net/yukulab/pointactivity/extension/PointHolder",
         "net/yukulab/pointactivity/extension/ClientConfigHolder"
       ],
-      "net/minecraft/class_3176": [
+      "net/minecraft/server/MinecraftServer": [
         "net/yukulab/pointactivity/extension/ServerConfigHolder"
       ]
     }

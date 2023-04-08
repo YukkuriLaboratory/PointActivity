@@ -1,4 +1,4 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
