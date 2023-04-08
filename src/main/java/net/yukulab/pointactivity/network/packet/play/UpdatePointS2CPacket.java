@@ -20,7 +20,6 @@ public class UpdatePointS2CPacket {
         throw new UnsupportedOperationException("Do not call me");
     }
 
-    @Environment(EnvType.SERVER)
     public static void send(ServerPlayerEntity player, int currentPoint, Map<PointReason, Integer> pointCache) {
         var buf = PacketByteBufs.create();
         buf.writeInt(currentPoint);

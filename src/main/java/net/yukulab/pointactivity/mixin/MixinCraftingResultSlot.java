@@ -1,11 +1,8 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.CraftingResultSlot;
-import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.point.PointReason;
 import net.yukulab.pointactivity.point.ServerPointContainer;
@@ -17,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CraftingResultSlot.class)
-@Environment(EnvType.SERVER)
 public class MixinCraftingResultSlot {
     @Shadow
     @Final
@@ -33,7 +29,7 @@ public class MixinCraftingResultSlot {
     )
     private void consumeCraftedPoint(ItemStack stack, CallbackInfo ci) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
-            var server = (MinecraftDedicatedServer) serverPlayer.server;
+            var server = serverPlayer.server;
             var craftPoint = server.pointactivity$getServerConfig().craftPoint();
             serverPlayer.pointactivity$getPointContainer()
                     .ifPresent(container ->

@@ -1,9 +1,8 @@
-package net.yukulab.pointactivity.mixin.server;
+package net.yukulab.pointactivity.mixin;
 
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.network.packet.play.SendServerConfigBothPacket;
@@ -35,11 +34,7 @@ public abstract class MixinPlayerManager {
     )
     public void sendServerData(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         if (connection.pointactivity$isModLoaded()) {
-            if (getServer() instanceof MinecraftDedicatedServer dedicatedServer) {
-                SendServerConfigBothPacket.send(player, dedicatedServer.pointactivity$getServerConfig());
-            } else {
-                PointActivity.LOGGER.warn("Unexpected error.", new RuntimeException("Server is not DedicatedServer"));
-            }
+            SendServerConfigBothPacket.send(player, getServer().pointactivity$getServerConfig());
             player.pointactivity$getPointContainer().ifPresentOrElse(
                     container -> UpdatePointS2CPacket.send(player, container.getPoint(), container.getReasonCache()),
                     () ->

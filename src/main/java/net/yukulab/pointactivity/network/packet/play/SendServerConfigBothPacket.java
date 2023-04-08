@@ -10,10 +10,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.MinecraftDedicatedServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.config.ServerConfig;
 import net.yukulab.pointactivity.network.Networking;
 
@@ -22,12 +20,10 @@ public class SendServerConfigBothPacket {
         throw new UnsupportedOperationException("Do not create this class instance");
     }
 
-    @Environment(EnvType.SERVER)
     public static void send(ServerPlayerEntity player, ServerConfig config) {
         ServerPlayNetworking.send(player, Networking.SEND_CONFIG, convert(config));
     }
 
-    @Environment(EnvType.SERVER)
     public static void onReceive(
             MinecraftServer server,
             ServerPlayerEntity player,
@@ -35,11 +31,7 @@ public class SendServerConfigBothPacket {
             PacketByteBuf buf,
             PacketSender responseSender
     ) {
-        if (server instanceof MinecraftDedicatedServer dedicatedServer) {
-            dedicatedServer.pointactivity$setServerConfig(readConfig(buf));
-        } else {
-            PointActivity.LOGGER.error("Unexpected error", new RuntimeException("This server is not DedicatedServer."));
-        }
+        server.pointactivity$setServerConfig(readConfig(buf));
     }
 
     @Environment(EnvType.CLIENT)

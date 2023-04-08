@@ -1,7 +1,5 @@
 package net.yukulab.pointactivity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -18,8 +16,7 @@ public class Commands {
     }
 
     @SuppressWarnings("checkstyle:LineLength")
-    @Environment(EnvType.SERVER)
-    public static void registerForServer() {
+    public static void register() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) ->
                 dispatcher.register(literal("pa")
                         .requires((serverCommandSource ->
