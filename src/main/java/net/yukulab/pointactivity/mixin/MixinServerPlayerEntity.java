@@ -53,4 +53,12 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             container.setPoint(actionPoint);
         });
     }
+
+    @Inject(
+            method = "copyFrom",
+            at = @At("RETURN")
+    )
+    public void copyPoint(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
+        oldPlayer.pointactivity$getPointContainer().ifPresent(container -> pointContainer = ((ServerPointContainer) container));
+    }
 }
