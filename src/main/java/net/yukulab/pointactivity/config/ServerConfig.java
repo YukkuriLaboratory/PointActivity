@@ -5,6 +5,7 @@ import marcono1234.gson.recordadapter.RecordTypeAdapterFactory;
 
 @JsonAdapter(RecordTypeAdapterFactory.class)
 public record ServerConfig(
+        int returnCountSec,
         int moveHorizontalPointPer,
         int moveVerticalPointPer,
         int craftPoint,
@@ -16,6 +17,6 @@ public record ServerConfig(
         int deathPenalty
 ) {
     public static ServerConfig getAsDefault() {
-        return new ServerConfig(100, 250, 10, 1, 3, 10, 5, 5, 100);
+        return new ServerConfig(10, 100, 250, 10, 1, 3, 10, 5, 5, 100);
     }
 }

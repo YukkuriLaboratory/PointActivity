@@ -47,6 +47,8 @@ public class ModMenuIntegration implements ModMenuApi {
 
             var serverDefaultConfig = ServerConfig.getAsDefault();
             var optionalServerConfig = getServerConfig();
+
+            var returnCountSec = new AtomicInteger();
             var moveHoriPointPer = new AtomicInteger();
             var moveVertPointPer = new AtomicInteger();
             var craftPoint = new AtomicInteger();
@@ -64,6 +66,12 @@ public class ModMenuIntegration implements ModMenuApi {
                 swingPoint.set(serverConfig.swingHandPoint());
                 attackPoint.set(serverConfig.attackPoint());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("ポイントが無くなった際の帰還カウントダウン(秒)"), returnCountSec.get())
+                                .setDefaultValue(serverDefaultConfig.returnCountSec())
+                                .setSaveConsumer(returnCountSec::set)
+                                .build()
+                );
                 serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動可能距離(cm)"), moveHoriPointPer.get())
                                 .setTooltip(Text.literal("note: 1ブロック=100cm"))
@@ -129,6 +137,7 @@ public class ModMenuIntegration implements ModMenuApi {
 
                 if (isInGame()) {
                     var newServerConfig = new ServerConfig(
+                            returnCountSec.get(),
                             moveHoriPointPer.get(),
                             moveVertPointPer.get(),
                             craftPoint.get(),
