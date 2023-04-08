@@ -107,7 +107,9 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             var pos = spawnablePos.get();
             player.refreshPositionAndAngles(pos.getX(), pos.getY(), pos.getZ(), player.getYaw(), 0);
         } else if (respawnPos != null) {
-            networkHandler.sendPacket(new GameStateChangeS2CPacket(GameStateChangeS2CPacket.NO_RESPAWN_BLOCK, GameStateChangeS2CPacket.DEMO_OPEN_SCREEN));
+            var noBlock = GameStateChangeS2CPacket.NO_RESPAWN_BLOCK;
+            var demo = GameStateChangeS2CPacket.DEMO_OPEN_SCREEN;
+            networkHandler.sendPacket(new GameStateChangeS2CPacket(noBlock, demo));
             var spawnPos = targetWorld.getSpawnPos();
             player.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         }
@@ -144,6 +146,7 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     public void copyPoint(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
-        oldPlayer.pointactivity$getPointContainer().ifPresent(container -> pointContainer = ((ServerPointContainer) container));
+        oldPlayer.pointactivity$getPointContainer()
+                .ifPresent(container -> pointContainer = ((ServerPointContainer) container));
     }
 }

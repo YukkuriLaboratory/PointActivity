@@ -55,7 +55,11 @@ public abstract class MixinPlayerManager {
             method = "respawnPlayer",
             at = @At("RETURN")
     )
-    private void applyDeathPenalty(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
+    private void applyDeathPenalty(
+            ServerPlayerEntity player,
+            boolean alive,
+            CallbackInfoReturnable<ServerPlayerEntity> cir
+    ) {
         cir.getReturnValue().pointactivity$getPointContainer().ifPresent(container -> {
             var penalty = server.pointactivity$getServerConfig().deathPenalty();
             ((ServerPointContainer) container).subtractPoint(penalty, PointReason.RESPAWN);
