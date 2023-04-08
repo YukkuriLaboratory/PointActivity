@@ -12,9 +12,10 @@ public record ServerConfig(
         int attackPoint,
         int bowPointPer,
         int foodPointPer,
-        int potionPointPer
+        int potionPointPer,
+        int deathPenalty
 ) {
     public static ServerConfig getAsDefault() {
-        return new ServerConfig(100, 250, 10, 1, 3, 10, 5, 5);
+        return new ServerConfig(100, 250, 10, 1, 3, 10, 5, 5, 100);
     }
 }

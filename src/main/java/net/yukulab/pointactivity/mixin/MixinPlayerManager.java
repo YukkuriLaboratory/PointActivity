@@ -7,16 +7,24 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.network.packet.play.SendServerConfigBothPacket;
 import net.yukulab.pointactivity.network.packet.play.UpdatePointS2CPacket;
+import net.yukulab.pointactivity.point.PointReason;
+import net.yukulab.pointactivity.point.ServerPointContainer;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerManager.class)
 public abstract class MixinPlayerManager {
     @Shadow
     public abstract MinecraftServer getServer();
+
+    @Shadow
+    @Final
+    private MinecraftServer server;
 
     @Inject(
             method = "onPlayerConnect",
@@ -41,5 +49,16 @@ public abstract class MixinPlayerManager {
                             PointActivity.LOGGER.warn("Unexpected error.", new RuntimeException("Container is null"))
             );
         }
+    }
+
+    @Inject(
+            method = "respawnPlayer",
+            at = @At("RETURN")
+    )
+    private void applyDeathPenalty(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
+        cir.getReturnValue().pointactivity$getPointContainer().ifPresent(container -> {
+            var penalty = server.pointactivity$getServerConfig().deathPenalty();
+            ((ServerPointContainer) container).subtractPoint(penalty, PointReason.RESPAWN);
+        });
     }
 }

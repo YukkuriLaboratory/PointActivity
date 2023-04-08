@@ -55,6 +55,7 @@ public class ModMenuIntegration implements ModMenuApi {
             var bowPoint = new AtomicInteger();
             var foodPoint = new AtomicInteger();
             var potionPoint = new AtomicInteger();
+            var deathPenalty = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
                 moveHoriPointPer.set(serverConfig.moveHorizontalPointPer());
@@ -114,6 +115,12 @@ public class ModMenuIntegration implements ModMenuApi {
                                 .setSaveConsumer(potionPoint::set)
                                 .build()
                 );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("デスペナルティ"), deathPenalty.get())
+                                .setDefaultValue(serverDefaultConfig.deathPenalty())
+                                .setSaveConsumer(deathPenalty::set)
+                                .build()
+                );
             }
 
             builder.setSavingRunnable(() -> {
@@ -129,7 +136,8 @@ public class ModMenuIntegration implements ModMenuApi {
                             attackPoint.get(),
                             bowPoint.get(),
                             foodPoint.get(),
-                            potionPoint.get()
+                            potionPoint.get(),
+                            deathPenalty.get()
                     );
                     SendServerConfigBothPacket.send(newServerConfig);
                 } else if (optionalServerConfig.isPresent()) {
