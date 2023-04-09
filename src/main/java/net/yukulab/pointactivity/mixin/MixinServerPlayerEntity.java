@@ -33,9 +33,6 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
     public MinecraftServer server;
 
     @Shadow
-    public abstract World getWorld();
-
-    @Shadow
     public abstract void sendMessage(Text message, boolean overlay);
 
     @Shadow
@@ -50,9 +47,6 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
 
     @Shadow
     public ServerPlayNetworkHandler networkHandler;
-
-    @Shadow
-    public abstract boolean isSpawnForced();
 
     @Shadow
     @Final
