@@ -44,9 +44,9 @@ public class Commands {
                                                                     container -> {
                                                                         var rev = container.getPoint();
                                                                         container.setPoint(newPoint);
-                                                                        source.sendMessage(Text.literal("ポイントを適応しました ").append(String.format("%d->%d", rev, newPoint)));
+                                                                        source.sendMessage(Text.literal("ポイントを適用しました ").append(String.format("%d->%d", rev, newPoint)));
                                                                     },
-                                                                    () -> source.sendError(Text.literal("ポイントの適応に失敗しました"))
+                                                                    () -> source.sendError(Text.literal("ポイントの適用に失敗しました"))
                                                             );
                                                     return 1;
                                                 }))
