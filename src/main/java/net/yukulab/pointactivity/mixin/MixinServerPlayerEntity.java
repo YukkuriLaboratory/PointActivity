@@ -16,6 +16,7 @@ import net.yukulab.pointactivity.extension.PointHolder;
 import net.yukulab.pointactivity.point.PointContainer;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,6 +50,13 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
 
     @Shadow
     public ServerPlayNetworkHandler networkHandler;
+
+    @Shadow
+    public abstract boolean isSpawnForced();
+
+    @Shadow
+    @Final
+    private static Logger LOGGER;
     private static final String POINT_TAG = String.format("%s$pointcontainer", PointActivity.MOD_NAME);
 
     private ServerPointContainer pointContainer;
@@ -78,7 +86,7 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             if (returnCount == 0 && !returned) {
                 teleportToRespawnPoint();
                 returned = true;
-            } else if (returnCount > 0 && (returnCount-- % 60 == 0 || (returnCount > 10 && returnCount < 80))) {
+            } else if (returnCount-- > 10) {
                 var remainSec = returnCount / 20;
                 var text = Text.literal(String.format("あと%d秒で帰還します", remainSec));
                 sendMessage(text, true);
@@ -97,19 +105,23 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
         var respawnWorld = server.getWorld(getSpawnPointDimension());
         var respawnPos = getSpawnPointPosition();
         Optional<Vec3d> spawnablePos;
+        LOGGER.info(String.format("World:%s,Pos:%s", respawnWorld, respawnPos));
         if (respawnWorld != null && respawnPos != null) {
-            spawnablePos = PlayerEntity.findRespawnPosition(respawnWorld, respawnPos, getSpawnAngle(), true, false);
+            spawnablePos = PlayerEntity.findRespawnPosition(respawnWorld, respawnPos, getSpawnAngle(), false, true);
         } else {
             spawnablePos = Optional.empty();
         }
+        LOGGER.info(String.format("pos:%s", spawnablePos));
         var targetWorld = respawnWorld != null && spawnablePos.isPresent() ? respawnWorld : server.getOverworld();
         if (spawnablePos.isPresent()) {
             var pos = spawnablePos.get();
             player.refreshPositionAndAngles(pos.getX(), pos.getY(), pos.getZ(), player.getYaw(), 0);
-        } else if (respawnPos != null) {
-            var noBlock = GameStateChangeS2CPacket.NO_RESPAWN_BLOCK;
-            var demo = GameStateChangeS2CPacket.DEMO_OPEN_SCREEN;
-            networkHandler.sendPacket(new GameStateChangeS2CPacket(noBlock, demo));
+        } else {
+            if (respawnPos != null) {
+                var noBlock = GameStateChangeS2CPacket.NO_RESPAWN_BLOCK;
+                var demo = GameStateChangeS2CPacket.DEMO_OPEN_SCREEN;
+                networkHandler.sendPacket(new GameStateChangeS2CPacket(noBlock, demo));
+            }
             var spawnPos = targetWorld.getSpawnPos();
             player.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         }
