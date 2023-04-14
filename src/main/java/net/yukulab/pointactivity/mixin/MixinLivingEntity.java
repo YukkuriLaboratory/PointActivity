@@ -30,7 +30,7 @@ public abstract class MixinLivingEntity {
     )
     private void consumeSwingHand(Hand hand, boolean fromServerPlayer, CallbackInfo ci) {
         var entity = (LivingEntity) (Object) this;
-        if (entity instanceof ServerPlayerEntity player && hand == Hand.MAIN_HAND) {
+        if (entity instanceof ServerPlayerEntity player && hand == Hand.MAIN_HAND && player.isPartOfGame()) {
             var server = player.server;
             var swingPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()

@@ -72,7 +72,8 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     private void countReturnSecond(CallbackInfo ci) {
-        if (!pointactivity$getPointContainer().map(PointContainer::hasPoint).orElse(true)) {
+        var player = (ServerPlayerEntity) (Object) this;
+        if (!pointactivity$getPointContainer().map(PointContainer::hasPoint).orElse(true) && player.isPartOfGame()) {
             if (returnCount == 0 && !returned) {
                 teleportToRespawnPoint();
                 returned = true;

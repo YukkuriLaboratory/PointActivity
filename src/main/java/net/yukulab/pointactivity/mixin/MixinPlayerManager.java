@@ -60,6 +60,7 @@ public abstract class MixinPlayerManager {
             boolean alive,
             CallbackInfoReturnable<ServerPlayerEntity> cir
     ) {
+        if (!player.isPartOfGame()) return;
         cir.getReturnValue().pointactivity$getPointContainer().ifPresent(container -> {
             var penalty = server.pointactivity$getServerConfig().deathPenalty();
             ((ServerPointContainer) container).subtractPoint(penalty, PointReason.RESPAWN);

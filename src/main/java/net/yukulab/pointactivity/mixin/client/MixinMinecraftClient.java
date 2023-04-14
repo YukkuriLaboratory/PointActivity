@@ -2,6 +2,7 @@ package net.yukulab.pointactivity.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.yukulab.pointactivity.config.ClientConfig;
 import net.yukulab.pointactivity.config.ConfigIO;
 import net.yukulab.pointactivity.config.ServerConfig;
@@ -11,7 +12,9 @@ import net.yukulab.pointactivity.extension.PointHolder;
 import net.yukulab.pointactivity.point.ClientPointContainer;
 import net.yukulab.pointactivity.point.PointContainer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -22,6 +25,9 @@ import java.util.Optional;
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient
         implements ModLoadedFlagHolder, PointHolder, ClientConfigHolder {
+    @Shadow
+    @Nullable
+    public ClientPlayerEntity player;
     private boolean connectedModdedServer;
     private ClientPointContainer pointContainer;
 
@@ -124,7 +130,7 @@ public abstract class MixinMinecraftClient
             cancellable = true
     )
     private void checkPoint(CallbackInfoReturnable<Boolean> cir) {
-        if (!pointContainer.hasPoint()) {
+        if (!pointContainer.hasPoint() && (player == null || player.isPartOfGame())) {
             cir.setReturnValue(false);
         }
     }
@@ -138,7 +144,7 @@ public abstract class MixinMinecraftClient
             cancellable = true
     )
     private void checkBlockBreakable(boolean breaking, CallbackInfo ci) {
-        if (!pointContainer.hasPoint()) {
+        if (!pointContainer.hasPoint() && (player == null || player.isPartOfGame())) {
             ci.cancel();
         }
     }
@@ -149,7 +155,7 @@ public abstract class MixinMinecraftClient
             cancellable = true
     )
     private void checkItemUsable(CallbackInfo ci) {
-        if (!pointContainer.hasPoint()) {
+        if (!pointContainer.hasPoint() && (player == null || player.isPartOfGame())) {
             ci.cancel();
         }
     }

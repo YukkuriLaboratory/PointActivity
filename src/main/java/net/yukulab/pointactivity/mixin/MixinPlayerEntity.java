@@ -24,7 +24,7 @@ public class MixinPlayerEntity {
             return;
         }
 
-        if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+        if (player instanceof ServerPlayerEntity serverPlayerEntity && serverPlayerEntity.isPartOfGame()) {
             var server = serverPlayerEntity.server;
             var movedCm = Math.round((float) Math.sqrt(dx * dx + dz * dz) * 100.0F);
 

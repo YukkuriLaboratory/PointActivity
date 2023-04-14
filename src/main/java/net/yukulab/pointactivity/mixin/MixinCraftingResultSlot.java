@@ -28,7 +28,7 @@ public class MixinCraftingResultSlot {
             )
     )
     private void consumeCraftedPoint(ItemStack stack, CallbackInfo ci) {
-        if (player instanceof ServerPlayerEntity serverPlayer) {
+        if (player instanceof ServerPlayerEntity serverPlayer && serverPlayer.isPartOfGame()) {
             var server = serverPlayer.server;
             var craftPoint = server.pointactivity$getServerConfig().craftPoint();
             serverPlayer.pointactivity$getPointContainer()
