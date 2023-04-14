@@ -1,9 +1,14 @@
 package net.yukulab.pointactivity.mixin;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.CraftingResultSlot;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.yukulab.pointactivity.config.ServerConfig;
+import net.yukulab.pointactivity.point.PointContainer;
 import net.yukulab.pointactivity.point.PointReason;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Final;
@@ -13,11 +18,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(CraftingResultSlot.class)
-public class MixinCraftingResultSlot {
+public abstract class MixinCraftingResultSlot extends Slot {
     @Shadow
     @Final
     private PlayerEntity player;
+
+    public MixinCraftingResultSlot(Inventory inventory, int index, int x, int y) {
+        super(inventory, index, x, y);
+    }
 
     @SuppressWarnings("checkstyle:LineLength")
     @Inject(
@@ -36,5 +47,27 @@ public class MixinCraftingResultSlot {
                             ((ServerPointContainer) container).subtractPoint(craftPoint, PointReason.CRAFT)
                     );
         }
+    }
+
+    @Override
+    public boolean canTakeItems(PlayerEntity playerEntity) {
+        Optional<PointContainer> pointContainer;
+        int craftPoint;
+        if (player instanceof ServerPlayerEntity serverPlayer) {
+            pointContainer = serverPlayer.pointactivity$getPointContainer();
+            craftPoint = serverPlayer.server.pointactivity$getServerConfig().craftPoint();
+        } else {
+            pointContainer = MinecraftClient.getInstance().pointactivity$getPointContainer();
+            craftPoint = MinecraftClient.getInstance()
+                    .pointactivity$getServerConfig()
+                    .map(ServerConfig::craftPoint)
+                    .orElse(0);
+        }
+        var notHaveEnoughPoint = pointContainer.map(container -> container.getPoint() < craftPoint)
+                .orElse(false);
+        if (notHaveEnoughPoint) {
+            return false;
+        }
+        return super.canTakeItems(playerEntity);
     }
 }
