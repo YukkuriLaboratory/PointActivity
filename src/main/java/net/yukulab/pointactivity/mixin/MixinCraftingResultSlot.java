@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Pair;
 import net.yukulab.pointactivity.config.ServerConfig;
 import net.yukulab.pointactivity.point.PointContainer;
 import net.yukulab.pointactivity.point.PointReason;
@@ -49,8 +50,23 @@ public abstract class MixinCraftingResultSlot extends Slot {
         }
     }
 
+    /**
+     * Prevent crafting when player does not have enough point to craft.
+     */
     @Override
     public boolean canTakeItems(PlayerEntity playerEntity) {
+        var data = getContainerAndCraftPoint();
+        var pointContainer = data.getLeft();
+        var craftPoint = data.getRight();
+        var notHaveEnoughPoint = pointContainer.map(container -> container.getPoint() < craftPoint)
+                .orElse(false);
+        if (notHaveEnoughPoint) {
+            return false;
+        }
+        return super.canTakeItems(playerEntity);
+    }
+
+    private Pair<Optional<PointContainer>, Integer> getContainerAndCraftPoint() {
         Optional<PointContainer> pointContainer;
         int craftPoint;
         if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -63,11 +79,6 @@ public abstract class MixinCraftingResultSlot extends Slot {
                     .map(ServerConfig::craftPoint)
                     .orElse(0);
         }
-        var notHaveEnoughPoint = pointContainer.map(container -> container.getPoint() < craftPoint)
-                .orElse(false);
-        if (notHaveEnoughPoint) {
-            return false;
-        }
-        return super.canTakeItems(playerEntity);
+        return new Pair<>(pointContainer, craftPoint);
     }
 }
