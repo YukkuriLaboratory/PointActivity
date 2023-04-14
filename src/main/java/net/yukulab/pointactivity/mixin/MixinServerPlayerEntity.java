@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.extension.PointHolder;
@@ -22,6 +23,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
@@ -149,5 +151,20 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
     public void copyPoint(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
         oldPlayer.pointactivity$getPointContainer()
                 .ifPresent(container -> pointContainer = ((ServerPointContainer) container));
+    }
+
+    @Inject(
+            method = "changeGameMode",
+            at = @At("RETURN")
+    )
+    public void disableShadowMode(GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
+        if (gameMode != GameMode.SPECTATOR && pointactivity$getPointContainer().map(PointContainer::isShadowMode).orElse(false)) {
+            var player = (ServerPlayerEntity) (Object) this;
+            pointContainer.setShadowMode(false);
+            server.getPlayerManager().getPlayerList().forEach(target -> {
+                if (target == player) return;
+                target.pointactivity$getPointContainer().ifPresent(container -> container.removeShadowedPlayer(player));
+            });
+        }
     }
 }

@@ -1,6 +1,7 @@
 package net.yukulab.pointactivity.point;
 
 import com.google.common.collect.Maps;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
  */
 public abstract class PointContainer {
     protected int currentPoint;
+    protected boolean isShadowMode = false;
 
     protected Map<PointReason, Integer> reasonCache = Maps.newHashMap();
 
@@ -29,6 +31,20 @@ public abstract class PointContainer {
 
     public int getPoint() {
         return currentPoint;
+    }
+
+    public boolean isShadowMode() {
+        return isShadowMode;
+    }
+
+    public void setShadowMode(boolean mode) {
+        isShadowMode = mode;
+    }
+
+    public void addShadowedPlayer(ServerPlayerEntity player) {
+    }
+
+    public void removeShadowedPlayer(ServerPlayerEntity player) {
     }
 
     public Map<PointReason, Integer> getReasonCache() {

@@ -20,10 +20,11 @@ public class UpdatePointS2CPacket {
         throw new UnsupportedOperationException("Do not call me");
     }
 
-    public static void send(ServerPlayerEntity player, int currentPoint, Map<PointReason, Integer> pointCache) {
+    public static void send(ServerPlayerEntity player, int currentPoint, Map<PointReason, Integer> pointCache, boolean isShadowMode) {
         var buf = PacketByteBufs.create();
         buf.writeInt(currentPoint);
         buf.writeMap(pointCache, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);
+        buf.writeBoolean(isShadowMode);
         ServerPlayNetworking.send(player, Networking.UPDATE_POINT, buf);
     }
 
@@ -37,8 +38,10 @@ public class UpdatePointS2CPacket {
         var currentPoint = buf.readInt();
         var currentPointCache =
                 buf.readMap(keyReader -> keyReader.readEnumConstant(PointReason.class), PacketByteBuf::readInt);
+        var isShadowMode = buf.readBoolean();
         client.pointactivity$getPointContainer().ifPresent(container -> {
             container.setPoint(currentPoint);
+            container.setShadowMode(isShadowMode);
             ((ClientPointContainer) container).updateReasonCache(currentPointCache);
         });
     }

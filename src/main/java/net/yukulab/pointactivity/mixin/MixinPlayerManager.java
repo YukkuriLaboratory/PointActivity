@@ -44,7 +44,7 @@ public abstract class MixinPlayerManager {
         if (connection.pointactivity$isModLoaded()) {
             SendServerConfigBothPacket.send(player, getServer().pointactivity$getServerConfig());
             player.pointactivity$getPointContainer().ifPresentOrElse(
-                    container -> UpdatePointS2CPacket.send(player, container.getPoint(), container.getReasonCache()),
+                    container -> UpdatePointS2CPacket.send(player, container.getPoint(), container.getReasonCache(), container.isShadowMode()),
                     () ->
                             PointActivity.LOGGER.warn("Unexpected error.", new RuntimeException("Container is null"))
             );

@@ -20,12 +20,15 @@ public class ComboElement extends HudElement {
         AtomicInteger index = new AtomicInteger(0);
         MinecraftClient.getInstance()
                 .pointactivity$getPointContainer()
-                .ifPresent(container -> ((ClientPointContainer) container).getCacheDiff().forEach((key, value) -> {
-                                    var combo = new Combo(key, value);
-                                    combo.y = y + 11 * index.getAndIncrement();
-                                    combo.render(matrixStack);
-                                }
-                        )
+                .ifPresent(container -> {
+                            if (container.isShadowMode()) return;
+                            ((ClientPointContainer) container).getCacheDiff().forEach((key, value) -> {
+                                        var combo = new Combo(key, value);
+                                        combo.y = y + 11 * index.getAndIncrement();
+                                        combo.render(matrixStack);
+                                    }
+                            );
+                        }
                 );
     }
 
