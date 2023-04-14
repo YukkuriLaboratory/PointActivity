@@ -21,7 +21,9 @@ public class ComboElement extends HudElement {
         MinecraftClient.getInstance()
                 .pointactivity$getPointContainer()
                 .ifPresent(container -> {
-                            if (container.isShadowMode()) return;
+                            if (container.isShadowMode()) {
+                                return;
+                            }
                             ((ClientPointContainer) container).getCacheDiff().forEach((key, value) -> {
                                         var combo = new Combo(key, value);
                                         combo.y = y + 11 * index.getAndIncrement();

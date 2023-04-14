@@ -27,15 +27,15 @@ public class ServerPointContainer extends PointContainer {
     }
 
     @Override
-    public void addShadowedPlayer(ServerPlayerEntity player) {
-        shadowingPlayers.add(player.getUuid());
-        player.pointactivity$getPointContainer().ifPresent(container -> container.isShadowMode = true);
-        UpdatePointS2CPacket.send(player, currentPoint, reasonCache, true);
+    public void addShadowedPlayer(ServerPlayerEntity target) {
+        shadowingPlayers.add(target.getUuid());
+        target.pointactivity$getPointContainer().ifPresent(container -> container.isShadowMode = true);
+        UpdatePointS2CPacket.send(target, currentPoint, reasonCache, true);
     }
 
     @Override
-    public void removeShadowedPlayer(ServerPlayerEntity player) {
-        shadowingPlayers.remove(player.getUuid());
+    public void removeShadowedPlayer(ServerPlayerEntity target) {
+        shadowingPlayers.remove(target.getUuid());
     }
 
     @Override

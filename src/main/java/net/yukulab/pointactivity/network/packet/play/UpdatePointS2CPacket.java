@@ -20,7 +20,12 @@ public class UpdatePointS2CPacket {
         throw new UnsupportedOperationException("Do not call me");
     }
 
-    public static void send(ServerPlayerEntity player, int currentPoint, Map<PointReason, Integer> pointCache, boolean isShadowMode) {
+    public static void send(
+            ServerPlayerEntity player,
+            int currentPoint,
+            Map<PointReason, Integer> pointCache,
+            boolean isShadowMode
+    ) {
         var buf = PacketByteBufs.create();
         buf.writeInt(currentPoint);
         buf.writeMap(pointCache, PacketByteBuf::writeEnumConstant, PacketByteBuf::writeInt);

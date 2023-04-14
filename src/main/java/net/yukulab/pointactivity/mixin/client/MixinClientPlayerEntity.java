@@ -25,7 +25,8 @@ public class MixinClientPlayerEntity {
     )
     private void checkMovable(MovementType movementType, Vec3d movement, CallbackInfo ci) {
         var player = (ClientPlayerEntity) (Object) this;
-        if (!client.pointactivity$getPointContainer().map(PointContainer::hasPoint).orElse(true) && player.isPartOfGame()) {
+        var hasPoint = client.pointactivity$getPointContainer().map(PointContainer::hasPoint).orElse(true);
+        if (!hasPoint && player.isPartOfGame()) {
             ci.cancel();
         }
     }

@@ -158,11 +158,14 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             at = @At("RETURN")
     )
     public void disableShadowMode(GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
-        if (gameMode != GameMode.SPECTATOR && pointactivity$getPointContainer().map(PointContainer::isShadowMode).orElse(false)) {
+        var isShadowMode = pointactivity$getPointContainer().map(PointContainer::isShadowMode).orElse(false);
+        if (gameMode != GameMode.SPECTATOR && isShadowMode) {
             var player = (ServerPlayerEntity) (Object) this;
             pointContainer.setShadowMode(false);
             server.getPlayerManager().getPlayerList().forEach(target -> {
-                if (target == player) return;
+                if (target == player) {
+                    return;
+                }
                 target.pointactivity$getPointContainer().ifPresent(container -> container.removeShadowedPlayer(player));
             });
         }
