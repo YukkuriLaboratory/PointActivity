@@ -22,8 +22,8 @@ public class ClientPointContainer extends PointContainer {
         var continueTimeMillis = MinecraftClient.getInstance()
                 .pointactivity$getClientConfig()
                 .comboContinueTimeMillis();
-        var shouldUpdate = (isShadowMode() || Duration.between(lastComboTime, now).toMillis() > continueTimeMillis);
-        if (currentCombo != 0 && shouldUpdate) {
+        if (currentCombo != 0 &&
+                (isShadowMode() || Duration.between(lastComboTime, now).toMillis() > continueTimeMillis)) {
             subtractPoint(currentCombo);
             currentCombo = 0;
             latestReasonCache = reasonCache;
