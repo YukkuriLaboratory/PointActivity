@@ -2,6 +2,7 @@ package net.yukulab.pointactivity.mixin;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.yukulab.pointactivity.point.PointReason;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,8 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(PlayerEntity.class)
-public class MixinPlayerEntity {
+public abstract class MixinPlayerEntity {
+    Vec3d preventPrevPos;
+
     int moveCmHolder;
     int climbCmHolder;
 
@@ -23,12 +28,17 @@ public class MixinPlayerEntity {
         if (player.hasVehicle()) {
             return;
         }
-
+        var actualMove = getPreventPrevPos()
+                .map(vec -> new Vec3d(player.prevX, player.prevY, player.prevZ).subtract(vec))
+                .orElse(Vec3d.ZERO);
         if (player instanceof ServerPlayerEntity serverPlayerEntity && serverPlayerEntity.isPartOfGame()) {
             var server = serverPlayerEntity.server;
-            var movedCm = Math.round((float) Math.sqrt(dx * dx + dz * dz) * 100.0F);
-
-            if (movedCm > 0) {
+            var movedCm = Math.round((float) Math.sqrt(dx * dx + dz * dz) * 100F);
+            var actualMoveX = actualMove.getX();
+            var actualMoveZ = actualMove.getZ();
+            var actualMovedCm =
+                    Math.round((float) Math.sqrt(actualMoveX * actualMoveX + actualMoveZ * actualMoveZ) * 100F);
+            if (movedCm > 0 && actualMovedCm > 0) {
                 var moveHoriPointPer = server.pointactivity$getServerConfig().moveHorizontalPointPer();
                 moveCmHolder += movedCm;
                 if (moveCmHolder > moveHoriPointPer) {
@@ -40,7 +50,7 @@ public class MixinPlayerEntity {
                     moveCmHolder %= moveHoriPointPer;
                 }
             }
-            if (dy > 0) {
+            if (dy > 0 && actualMove.getY() > 0) {
                 var moveVertPointPer = server.pointactivity$getServerConfig().moveVerticalPointPer();
                 var climbedCm = Math.round(dy * 100.0);
                 climbCmHolder += climbedCm;
@@ -54,5 +64,27 @@ public class MixinPlayerEntity {
                 }
             }
         }
+        resetPreventPrevPos();
+    }
+
+    @Inject(
+            method = "dismountVehicle",
+            at = @At("RETURN")
+    )
+    private void resetPrevPos(CallbackInfo ci) {
+        resetPreventPrevPos();
+    }
+
+    public void resetPreventPrevPos() {
+        var player = (PlayerEntity) (Object) this;
+        setPreventPrevPos(new Vec3d(player.prevX, player.prevY, player.prevZ));
+    }
+
+    public void setPreventPrevPos(Vec3d preventPrevPos) {
+        this.preventPrevPos = preventPrevPos;
+    }
+
+    public Optional<Vec3d> getPreventPrevPos() {
+        return Optional.ofNullable(preventPrevPos);
     }
 }
