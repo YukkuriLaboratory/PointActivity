@@ -80,8 +80,8 @@ public abstract class MixinPlayerEntity {
         setPreventPrevPos(new Vec3d(player.prevX, player.prevY, player.prevZ));
     }
 
-    public void setPreventPrevPos(Vec3d preventPrevPos) {
-        this.preventPrevPos = preventPrevPos;
+    public void setPreventPrevPos(Vec3d newPrevPos) {
+        preventPrevPos = newPrevPos;
     }
 
     public Optional<Vec3d> getPreventPrevPos() {
