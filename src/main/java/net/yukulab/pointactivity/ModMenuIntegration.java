@@ -100,7 +100,7 @@ public class ModMenuIntegration implements ModMenuApi {
                 );
                 serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("1攻撃あたりのポイント増加量"), attackPoint.get())
-                                .setTooltip(Text.literal("注意:振りによるポイント消費も加算されます"))
+                                .setTooltip(Text.literal("注意:振りによるポイントも加算されます"))
                                 .setDefaultValue(serverDefaultConfig.attackPoint())
                                 .setSaveConsumer(attackPoint::set)
                                 .build()
