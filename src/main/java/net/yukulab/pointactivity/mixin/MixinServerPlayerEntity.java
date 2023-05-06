@@ -1,11 +1,13 @@
 package net.yukulab.pointactivity.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -169,5 +171,18 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
                 target.pointactivity$getPointContainer().ifPresent(container -> container.removeShadowedPlayer(player));
             });
         }
+    }
+
+    @Inject(
+            method = "moveToWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;refreshPositionAfterTeleport(DDD)V",
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void resetMoveCounter(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
+        var player = (PlayerEntity) (Object) this;
+        player.resetPreventPrevPos();
     }
 }

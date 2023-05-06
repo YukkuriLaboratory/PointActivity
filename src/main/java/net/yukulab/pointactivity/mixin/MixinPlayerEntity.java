@@ -3,6 +3,8 @@ package net.yukulab.pointactivity.mixin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
+import net.yukulab.pointactivity.PointActivity;
+import net.yukulab.pointactivity.extension.MovingCounter;
 import net.yukulab.pointactivity.point.PointReason;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity {
+public abstract class MixinPlayerEntity implements MovingCounter {
     Vec3d preventPrevPos;
 
     int moveCmHolder;
@@ -47,6 +49,7 @@ public abstract class MixinPlayerEntity {
                             .ifPresent(container ->
                                     ((ServerPointContainer) container).subtractPoint(walkedPoint, PointReason.MOVE)
                             );
+                    PointActivity.LOGGER.debug("Player:{} MoveH:{}", serverPlayerEntity.getEntityName(), walkedPoint);
                     moveCmHolder %= moveHoriPointPer;
                 }
             }
@@ -60,6 +63,7 @@ public abstract class MixinPlayerEntity {
                             .ifPresent(container ->
                                     ((ServerPointContainer) container).subtractPoint(climbedPoint, PointReason.MOVE)
                             );
+                    PointActivity.LOGGER.debug("Player:{} MoveV:{}", serverPlayerEntity.getEntityName(), climbedPoint);
                     climbCmHolder %= moveVertPointPer;
                 }
             }
@@ -75,6 +79,7 @@ public abstract class MixinPlayerEntity {
         resetPreventPrevPos();
     }
 
+    @Override
     public void resetPreventPrevPos() {
         var player = (PlayerEntity) (Object) this;
         setPreventPrevPos(new Vec3d(player.prevX, player.prevY, player.prevZ));

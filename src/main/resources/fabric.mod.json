@@ -40,6 +40,9 @@
         "net/yukulab/pointactivity/extension/PointHolder",
         "net/yukulab/pointactivity/extension/ClientConfigHolder"
       ],
+      "net/minecraft/class_1657": [
+        "net/yukulab/pointactivity/extension/MovingCounter"
+      ],
       "net/minecraft/server/MinecraftServer": [
         "net/yukulab/pointactivity/extension/ServerConfigHolder"
       ]
