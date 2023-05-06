@@ -70,7 +70,7 @@ public abstract class MixinPlayerManager {
         }
         cir.getReturnValue().pointactivity$getPointContainer().ifPresent(container -> {
             var penalty = server.pointactivity$getServerConfig().deathPenalty();
-            ((ServerPointContainer) container).subtractPoint(penalty, PointReason.RESPAWN);
+            ((ServerPointContainer) container).addPoint(penalty, PointReason.RESPAWN);
         });
     }
 }

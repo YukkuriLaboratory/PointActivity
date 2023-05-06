@@ -27,14 +27,14 @@ public class PointElement extends HudElement {
         return getDisplayPoint()
                 .map(point -> {
                     var number = Text.literal(Integer.toString(point));
-                    Formatting color;
-                    if (point > 500) {
-                        color = Formatting.GREEN;
-                    } else if (point > 100) {
-                        color = Formatting.YELLOW;
-                    } else {
-                        color = Formatting.RED;
-                    }
+                    Formatting color = Formatting.GREEN;
+//                    if (point > 500) {
+//                        color = Formatting.GREEN;
+//                    } else if (point > 100) {
+//                        color = Formatting.YELLOW;
+//                    } else {
+//                        color = Formatting.RED;
+//                    }
                     number.setStyle(Style.EMPTY.withColor(color));
                     return Text.literal("Point: ").append(number);
                 })

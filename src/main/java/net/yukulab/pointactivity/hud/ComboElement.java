@@ -52,9 +52,9 @@ public class ComboElement extends HudElement {
         @Override
         Text getText() {
             if (amountCombo < 0) {
-                return Text.literal(String.format("%s +%d", pointReason.displayName, -amountCombo));
+                return Text.literal(String.format("%s -%d", pointReason.displayName, -amountCombo));
             } else {
-                return Text.literal(String.format("%s -%d", pointReason.displayName, amountCombo));
+                return Text.literal(String.format("%s +%d", pointReason.displayName, amountCombo));
             }
         }
     }

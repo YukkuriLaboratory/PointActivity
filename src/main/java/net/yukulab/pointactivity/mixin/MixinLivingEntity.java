@@ -35,7 +35,7 @@ public abstract class MixinLivingEntity {
             var swingPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
-                            ((ServerPointContainer) container).subtractPoint(swingPoint, PointReason.SWING)
+                            ((ServerPointContainer) container).addPoint(swingPoint, PointReason.SWING)
                     );
         }
     }
@@ -51,7 +51,7 @@ public abstract class MixinLivingEntity {
             var attackPoint = server.pointactivity$getServerConfig().swingHandPoint();
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
-                            ((ServerPointContainer) container).subtractPoint(attackPoint, PointReason.ATTACK)
+                            ((ServerPointContainer) container).addPoint(attackPoint, PointReason.ATTACK)
                     );
         }
     }
@@ -71,7 +71,7 @@ public abstract class MixinLivingEntity {
             if (itemStack.getItem() == Items.BOW) {
                 player.pointactivity$getPointContainer().ifPresent(container -> {
                     if (++currentBowUseTick > server.pointactivity$getServerConfig().bowPointPer()) {
-                        ((ServerPointContainer) container).subtractPoint(1, PointReason.BOW);
+                        ((ServerPointContainer) container).addPoint(1, PointReason.BOW);
                         currentBowUseTick = 0;
                     }
                 });
@@ -92,7 +92,7 @@ public abstract class MixinLivingEntity {
             var server = player.server;
             player.pointactivity$getPointContainer().ifPresent(container -> {
                 if (++currentFoodUseTick > server.pointactivity$getServerConfig().foodPointPer()) {
-                    ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
+                    ((ServerPointContainer) container).addPoint(1, PointReason.EAT);
                     currentFoodUseTick = 0;
                 }
             });
@@ -109,7 +109,7 @@ public abstract class MixinLivingEntity {
             var server = player.server;
             player.pointactivity$getPointContainer().ifPresent(container -> {
                 if (++currentPotionUseTick > server.pointactivity$getServerConfig().potionPointPer()) {
-                    ((ServerPointContainer) container).subtractPoint(1, PointReason.EAT);
+                    ((ServerPointContainer) container).addPoint(1, PointReason.EAT);
                     currentPotionUseTick = 0;
                 }
             });

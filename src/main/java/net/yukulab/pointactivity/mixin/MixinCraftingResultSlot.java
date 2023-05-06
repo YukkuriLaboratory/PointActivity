@@ -45,7 +45,7 @@ public abstract class MixinCraftingResultSlot extends Slot {
             var craftPoint = server.pointactivity$getServerConfig().craftPoint();
             serverPlayer.pointactivity$getPointContainer()
                     .ifPresent(container ->
-                            ((ServerPointContainer) container).subtractPoint(craftPoint, PointReason.CRAFT)
+                            ((ServerPointContainer) container).addPoint(craftPoint, PointReason.CRAFT)
                     );
         }
     }

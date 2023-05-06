@@ -15,14 +15,14 @@ public class ServerPointContainer extends PointContainer {
         player = playerEntity;
     }
 
-    public void subtractPoint(int amount, PointReason reason) {
+    public void addPoint(int amount, PointReason reason) {
         addReasonPoint(reason, amount);
-        subtractPoint(amount);
+        addPoint(amount);
     }
 
     @Override
-    public void subtractPoint(int amount) {
-        super.subtractPoint(amount);
+    public void addPoint(int amount) {
+        super.addPoint(amount);
         sendUpdatePacket();
     }
 

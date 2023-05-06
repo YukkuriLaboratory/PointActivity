@@ -24,7 +24,7 @@ public class ClientPointContainer extends PointContainer {
                 .comboContinueTimeMillis();
         if (currentCombo != 0
                 && (isShadowMode() || Duration.between(lastComboTime, now).toMillis() > continueTimeMillis)) {
-            subtractPoint(currentCombo);
+            addPoint(currentCombo);
             currentCombo = 0;
             latestReasonCache = reasonCache;
         }
@@ -33,13 +33,8 @@ public class ClientPointContainer extends PointContainer {
     @Override
     public void setPoint(int point) {
         super.setPoint(point);
-        currentCombo = currentPoint - point;
+        currentCombo = point - currentPoint;
         lastComboTime = Instant.now();
-    }
-
-    @Override
-    public boolean hasPoint() {
-        return super.hasPoint() && currentCombo < currentPoint;
     }
 
     public void updateReasonCache(Map<PointReason, Integer> newCache) {

@@ -47,7 +47,7 @@ public abstract class MixinPlayerEntity implements MovingCounter {
                     var walkedPoint = moveCmHolder / moveHoriPointPer;
                     serverPlayerEntity.pointactivity$getPointContainer()
                             .ifPresent(container ->
-                                    ((ServerPointContainer) container).subtractPoint(walkedPoint, PointReason.MOVE)
+                                    ((ServerPointContainer) container).addPoint(walkedPoint, PointReason.MOVE)
                             );
                     PointActivity.LOGGER.debug("Player:{} MoveH:{}", serverPlayerEntity.getEntityName(), walkedPoint);
                     moveCmHolder %= moveHoriPointPer;
@@ -61,7 +61,7 @@ public abstract class MixinPlayerEntity implements MovingCounter {
                     var climbedPoint = climbCmHolder / moveVertPointPer;
                     serverPlayerEntity.pointactivity$getPointContainer()
                             .ifPresent(container ->
-                                    ((ServerPointContainer) container).subtractPoint(climbedPoint, PointReason.MOVE)
+                                    ((ServerPointContainer) container).addPoint(climbedPoint, PointReason.MOVE)
                             );
                     PointActivity.LOGGER.debug("Player:{} MoveV:{}", serverPlayerEntity.getEntityName(), climbedPoint);
                     climbCmHolder %= moveVertPointPer;

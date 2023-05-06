@@ -15,11 +15,11 @@ public abstract class PointContainer {
 
     protected Map<PointReason, Integer> reasonCache = Maps.newHashMap();
 
-    public void subtractPoint(int amount) {
-        if (currentPoint < amount) {
+    public void addPoint(int amount) {
+        if (currentPoint + amount < 0) {
             currentPoint = 0;
         } else {
-            currentPoint -= amount;
+            currentPoint += amount;
         }
     }
 
@@ -57,9 +57,5 @@ public abstract class PointContainer {
             amount = currentPoint;
         }
         reasonCache.put(pointReason, current + amount);
-    }
-
-    public boolean hasPoint() {
-        return currentPoint > 0;
     }
 }
