@@ -67,39 +67,39 @@ public class ModMenuIntegration implements ModMenuApi {
                 attackPoint.set(serverConfig.attackPoint());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("ポイントが無くなった際の帰還カウントダウン(秒)"), returnCountSec.get())
+                        entryBuilder.startIntField(Text.literal("ポイントが無くなった際の帰還カウントダウン(秒)(無効)"), returnCountSec.get())
                                 .setDefaultValue(serverDefaultConfig.returnCountSec())
                                 .setSaveConsumer(returnCountSec::set)
                                 .build()
                 );
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動可能距離(cm)"), moveHoriPointPer.get())
+                        entryBuilder.startIntField(Text.literal("1ポイントあたりの水平移動距離(cm)"), moveHoriPointPer.get())
                                 .setTooltip(Text.literal("note: 1ブロック=100cm"))
                                 .setDefaultValue(serverDefaultConfig.moveHorizontalPointPer())
                                 .setSaveConsumer(moveHoriPointPer::set)
                                 .build()
                 );
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("1ポイントあたりの垂直移動可能距離(cm)"), moveHoriPointPer.get())
+                        entryBuilder.startIntField(Text.literal("1ポイントあたりの垂直移動距離(cm)"), moveHoriPointPer.get())
                                 .setTooltip(Text.literal("note: 1ブロック=100cm"))
                                 .setDefaultValue(serverDefaultConfig.moveVerticalPointPer())
                                 .setSaveConsumer(moveVertPointPer::set)
                                 .build()
                 );
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("1クラフトあたりのポイント消費量"), craftPoint.get())
+                        entryBuilder.startIntField(Text.literal("1クラフトあたりのポイント増加量"), craftPoint.get())
                                 .setDefaultValue(serverDefaultConfig.craftPoint())
                                 .setSaveConsumer(craftPoint::set)
                                 .build()
                 );
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("1振りあたりのポイント消費量"), swingPoint.get())
+                        entryBuilder.startIntField(Text.literal("1振りあたりのポイント増加量"), swingPoint.get())
                                 .setDefaultValue(serverDefaultConfig.swingHandPoint())
                                 .setSaveConsumer(swingPoint::set)
                                 .build()
                 );
                 serverCategory.addEntry(
-                        entryBuilder.startIntField(Text.literal("1攻撃あたりのポイント消費量"), attackPoint.get())
+                        entryBuilder.startIntField(Text.literal("1攻撃あたりのポイント増加量"), attackPoint.get())
                                 .setTooltip(Text.literal("注意:振りによるポイント消費も加算されます"))
                                 .setDefaultValue(serverDefaultConfig.attackPoint())
                                 .setSaveConsumer(attackPoint::set)
