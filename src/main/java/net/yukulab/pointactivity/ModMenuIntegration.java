@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ModMenuIntegration implements ModMenuApi {
+    @SuppressWarnings("checkstyle:MethodLength")
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {

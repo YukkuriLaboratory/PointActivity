@@ -22,7 +22,13 @@ public abstract class MixinClickManaitaBaseBlock {
             method = "onUse",
             at = @At("RETURN")
     )
-    private void consumeUseManaitaBlock(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+    private void consumeUseManaitaBlock(
+            BlockState state,
+            World world, BlockPos pos,
+            PlayerEntity player, Hand hand,
+            BlockHitResult hit,
+            CallbackInfoReturnable<ActionResult> cir
+    ) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
             var server = serverPlayer.server;
             var manaitaBlockPoint = server.pointactivity$getServerConfig().manaitaBlockPoint();
