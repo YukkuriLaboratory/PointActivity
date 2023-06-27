@@ -19,8 +19,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container:
-      image: openjdk:17-jdk
-      options: --user root
+        image: eclipse-temurin:17-jdk
+        options: --user root
 
     steps:
         -   uses: actions/checkout@v3
