@@ -14,9 +14,11 @@ public record ServerConfig(
         int bowPointPer,
         int foodPointPer,
         int potionPointPer,
+        int manaitaHandPoint,
+        int manaitaBlockPoint,
         int deathPenalty
 ) {
     public static ServerConfig getAsDefault() {
-        return new ServerConfig(10, 100, 250, 10, 1, 3, 10, 5, 5, 100);
+        return new ServerConfig(10, 100, 250, 10, 1, 3, 10, 5, 5, 10, 10, 100);
     }
 }

@@ -11,6 +11,9 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "MixinClickManaitaBaseBlock",
+    "MixinClickManaitaBaseItem",
+    "MixinClickManaitaCustomItem",
     "MixinClientConnection",
     "MixinCraftingResultSlot",
     "MixinLivingEntity",

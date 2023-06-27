@@ -57,6 +57,8 @@ public class ModMenuIntegration implements ModMenuApi {
             var bowPoint = new AtomicInteger();
             var foodPoint = new AtomicInteger();
             var potionPoint = new AtomicInteger();
+            var manaitaHandPoint = new AtomicInteger();
+            var manaitaBlockPoint = new AtomicInteger();
             var deathPenalty = new AtomicInteger();
             if (optionalServerConfig.isPresent()) {
                 var serverConfig = optionalServerConfig.get();
@@ -124,6 +126,18 @@ public class ModMenuIntegration implements ModMenuApi {
                                 .build()
                 );
                 serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1まな板あたりのポイント増加量(アイテム)"), manaitaHandPoint.get())
+                                .setDefaultValue(serverDefaultConfig.manaitaHandPoint())
+                                .setSaveConsumer(manaitaHandPoint::set)
+                                .build()
+                );
+                serverCategory.addEntry(
+                        entryBuilder.startIntField(Text.literal("1まな板あたりのポイント増加量(ブロック)"), manaitaBlockPoint.get())
+                                .setDefaultValue(serverDefaultConfig.manaitaBlockPoint())
+                                .setSaveConsumer(manaitaBlockPoint::set)
+                                .build()
+                );
+                serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("デスペナルティ"), deathPenalty.get())
                                 .setDefaultValue(serverDefaultConfig.deathPenalty())
                                 .setSaveConsumer(deathPenalty::set)
@@ -146,6 +160,8 @@ public class ModMenuIntegration implements ModMenuApi {
                             bowPoint.get(),
                             foodPoint.get(),
                             potionPoint.get(),
+                            manaitaHandPoint.get(),
+                            manaitaBlockPoint.get(),
                             deathPenalty.get()
                     );
                     SendServerConfigBothPacket.send(newServerConfig);

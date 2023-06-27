@@ -23,6 +23,12 @@ repositories {
             includeModule("com.github.Marcono1234", "gson-record-type-adapter-factory")
         }
     }
+    maven {
+        url = uri("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
@@ -39,6 +45,9 @@ dependencies {
     modApi("com.terraformersmc:modmenu:4.1.1")
 
     modApi(include("com.github.Marcono1234:gson-record-type-adapter-factory:0.3.0")!!)
+
+    modImplementation("curse.maven:clickmanaita-291297:4153895")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.9.6+kotlin.1.8.22")
 }
 
 tasks.processResources {
