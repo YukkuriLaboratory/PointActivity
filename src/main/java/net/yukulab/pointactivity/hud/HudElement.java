@@ -1,8 +1,7 @@
 package net.yukulab.pointactivity.hud;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 
@@ -22,9 +21,9 @@ public abstract class HudElement {
         return MinecraftClient.getInstance().inGameHud.getTextRenderer().getWidth(getText());
     }
 
-    public void render(MatrixStack matrixStack) {
-        DrawableHelper.fill(matrixStack, x, y, x + getWidth() + 3, y + getHeight(), backgroundColor);
-        MinecraftClient.getInstance().inGameHud.getTextRenderer().draw(matrixStack, getText(), x + 2, y + 2, -1);
+    public void render(DrawContext context) {
+        context.fill(x, y, x + getWidth() + 3, y + getHeight(), backgroundColor);
+        context.drawText(MinecraftClient.getInstance().inGameHud.getTextRenderer(), getText(), x + 2, y + 2, -1, false);
     }
 
     abstract Text getText();

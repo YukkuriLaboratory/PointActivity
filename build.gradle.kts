@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom") version "1.0-SNAPSHOT"
+    id("fabric-loom") version "1.2-SNAPSHOT"
     `maven-publish`
     checkstyle
 }
@@ -39,14 +39,14 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
-    modApi("me.shedaniel.cloth:cloth-config-fabric:8.2.88") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:11.0.99") {
         exclude("net.fabricmc.fabric-api")
     }
-    modApi("com.terraformersmc:modmenu:4.1.1")
+    modApi("com.terraformersmc:modmenu:7.1.0")
 
     modApi(include("com.github.Marcono1234:gson-record-type-adapter-factory:0.3.0")!!)
 
-    modImplementation("curse.maven:clickmanaita-291297:4153895")
+    modImplementation("curse.maven:clickmanaita-291297:4589752")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.9.6+kotlin.1.8.22")
 }
 

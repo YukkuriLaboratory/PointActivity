@@ -97,7 +97,7 @@ public abstract class MixinServerPlayerEntity implements PointHolder {
             method = "moveToWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;refreshPositionAfterTeleport(DDD)V",
+                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;syncWithPlayerPosition()V",
                     shift = At.Shift.AFTER
             )
     )

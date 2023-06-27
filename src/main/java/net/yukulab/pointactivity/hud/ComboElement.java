@@ -1,7 +1,7 @@
 package net.yukulab.pointactivity.hud;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.yukulab.pointactivity.point.ClientPointContainer;
 import net.yukulab.pointactivity.point.PointReason;
@@ -16,18 +16,18 @@ public class ComboElement extends HudElement {
     }
 
     @Override
-    public void render(MatrixStack matrixStack) {
+    public void render(DrawContext context) {
         AtomicInteger index = new AtomicInteger(0);
         MinecraftClient.getInstance()
                 .pointactivity$getPointContainer()
                 .ifPresent(container -> {
-                            if (container.isShadowMode()) {
-                                return;
-                            }
-                            ((ClientPointContainer) container).getCacheDiff().forEach((key, value) -> {
-                                        var combo = new Combo(key, value);
-                                        combo.y = y + 11 * index.getAndIncrement();
-                                        combo.render(matrixStack);
+                    if (container.isShadowMode()) {
+                        return;
+                    }
+                    ((ClientPointContainer) container).getCacheDiff().forEach((key, value) -> {
+                                var combo = new Combo(key, value);
+                                combo.y = y + 11 * index.getAndIncrement();
+                                combo.render(context);
                                     }
                             );
                         }
