@@ -68,6 +68,12 @@ public class ModMenuIntegration implements ModMenuApi {
                 craftPoint.set(serverConfig.craftPoint());
                 swingPoint.set(serverConfig.swingHandPoint());
                 attackPoint.set(serverConfig.attackPoint());
+                bowPoint.set(serverConfig.bowPointPer());
+                foodPoint.set(serverConfig.foodPointPer());
+                potionPoint.set(serverConfig.potionPointPer());
+                manaitaHandPoint.set(serverConfig.manaitaHandPoint());
+                manaitaBlockPoint.set(serverConfig.manaitaBlockPoint());
+                deathPenalty.set(serverConfig.deathPenalty());
                 var serverCategory = builder.getOrCreateCategory(Text.literal("Server"));
                 serverCategory.addEntry(
                         entryBuilder.startIntField(Text.literal("ポイントが無くなった際の帰還カウントダウン(秒)(無効)"), returnCountSec.get())
