@@ -12,6 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.config.ServerConfig;
 import net.yukulab.pointactivity.network.Networking;
 
@@ -31,7 +32,9 @@ public class SendServerConfigBothPacket {
             PacketByteBuf buf,
             PacketSender responseSender
     ) {
-        server.pointactivity$setServerConfig(readConfig(buf));
+        ServerConfig config = readConfig(buf);
+        PointActivity.LOGGER.debug("Received config from " + player.getName() + ": " + config);
+        server.pointactivity$setServerConfig(config);
     }
 
     @Environment(EnvType.CLIENT)
@@ -46,7 +49,9 @@ public class SendServerConfigBothPacket {
             PacketByteBuf buf,
             PacketSender responseSender
     ) {
-        client.pointactivity$setServerConfig(readConfig(buf));
+        ServerConfig config = readConfig(buf);
+        PointActivity.LOGGER.debug("Received config from server: " + config);
+        client.pointactivity$setServerConfig(config);
     }
 
     private static PacketByteBuf convert(ServerConfig config) {
