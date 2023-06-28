@@ -7,15 +7,21 @@ import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
+import net.yukulab.pointactivity.PointActivity;
 import net.yukulab.pointactivity.point.PointReason;
 import net.yukulab.pointactivity.point.ServerPointContainer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
+    @Shadow
+    public boolean handSwinging;
+    @Shadow
+    public int handSwingTicks;
     private int currentBowUseTick;
     private int currentFoodUseTick;
     private int currentPotionUseTick;
@@ -33,6 +39,9 @@ public abstract class MixinLivingEntity {
         if (entity instanceof ServerPlayerEntity player && hand == Hand.MAIN_HAND && player.isPartOfGame()) {
             var server = player.server;
             var swingPoint = server.pointactivity$getServerConfig().swingHandPoint();
+            PointActivity.LOGGER.debug("Swing");
+            // バニラでは-1になってるせいでブロックを殴った最初に2回この処理が実行される
+            handSwingTicks = 0;
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
                             ((ServerPointContainer) container).addPoint(swingPoint, PointReason.SWING)
@@ -48,7 +57,8 @@ public abstract class MixinLivingEntity {
         var entity = (LivingEntity) (Object) this;
         if (entity instanceof ServerPlayerEntity player) {
             var server = player.server;
-            var attackPoint = server.pointactivity$getServerConfig().swingHandPoint();
+            var attackPoint = server.pointactivity$getServerConfig().attackPoint();
+            PointActivity.LOGGER.debug("Attack");
             player.pointactivity$getPointContainer()
                     .ifPresent(container ->
                             ((ServerPointContainer) container).addPoint(attackPoint, PointReason.ATTACK)
