@@ -50,6 +50,10 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:1.9.6+kotlin.1.8.22")
 }
 
+loom {
+    log4jConfigs.from(file("log4j2.xml"))
+}
+
 tasks.processResources {
     inputs.property("version", project.version)
     filteringCharset = "UTF-8"
