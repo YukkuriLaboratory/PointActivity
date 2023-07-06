@@ -1,0 +1,48 @@
+name: Publish on GitHub, CurseForge & Modrinth
+
+on:
+    push:
+        tags:
+            - "v*"
+
+env:
+    MOD_VERSION: ${{ GITHUB.refs | replace('refs/tags/v', '') }}
+
+permissions:
+    contents: write
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Check environment variables
+                run: env
+            -   uses: actions/checkout@v3
+            -   name: get release tag
+                id: tag
+                uses: dawidd6/action-get-tag@v1
+                with:
+                    strip_v: true
+            -   uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+                    cache: 'gradle'
+            -   name: Build with Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: build
+
+            -   uses: Kir-Antipov/mc-publish@v3.2
+                with:
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    curseforge-id: ${{ secrets.CURSEFORGE_ID }}
+                    curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+                    modrinth-id: ${{ secrets.MODRINTH_ID }}
+                    modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+                    version: ${{ env.MOD_VERSION }}
+                    name: ${{ env.MOD_VERSION }}
+                    version-type: release
+                    java: 17
+                    loaders: fabric
+                    game-versions: 1.20.1
