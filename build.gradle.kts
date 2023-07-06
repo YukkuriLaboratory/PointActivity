@@ -4,7 +4,10 @@ plugins {
     checkstyle
 }
 
-version = project.property("mod_version")!!
+val minecraftVersion = project.property("minecraft_version")
+val modVersion = System.getenv("MOD_VERSION") ?: "develop"
+
+version = "$modVersion+$minecraftVersion"
 group = project.property("maven_group")!!
 
 repositories {
@@ -27,7 +30,7 @@ repositories {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
+    minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
 
