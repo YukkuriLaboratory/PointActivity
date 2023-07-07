@@ -46,6 +46,13 @@
       "net/minecraft/server/MinecraftServer": [
         "net/yukulab/pointactivity/extension/ServerConfigHolder"
       ]
+    },
+    "mc-publish": {
+      "dependencies": [
+        "cloth-config{modrinth:9s6osm5g}{curseforge:348521}(required)#(ignore:github)",
+        "modmenu{modrinth:mOgUt4GM}{curseforge:308702}(optional)#(ignore:github)",
+        "clickmanaita{curseforge:291297}(optional)#(ignore:modrinth)"
+      ]
     }
   }
 }
