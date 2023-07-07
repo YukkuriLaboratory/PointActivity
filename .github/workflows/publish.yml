@@ -18,9 +18,9 @@ jobs:
             -   uses: actions/checkout@v3
             -   name: get release tag
                 id: tag
-                uses: dawidd6/action-get-tag@v1
+                uses: olegtarasov/get-tag@v2.1.2
                 with:
-                    strip_v: true
+                    tagRegex: "v(.*)"
             -   uses: actions/setup-java@v2
                 with:
                     java-version: '17'
@@ -31,7 +31,7 @@ jobs:
                 with:
                     arguments: build
                 env:
-                    MOD_VERSION: ${{ github.ref | replace('refs/tags/v', '') }}
+                    MOD_VERSION: ${{ steps.tag.outputs.tag }}
 
             -   uses: Kir-Antipov/mc-publish@v3.2
                 with:
@@ -40,7 +40,7 @@ jobs:
                     curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
                     modrinth-id: ${{ secrets.MODRINTH_ID }}
                     modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-                    version: ${{ github.ref | replace('refs/tags/v', '') }}
+                    version: ${{ steps.tag.outputs.tag }}
                     version-type: release
                     java: 17
                     loaders: fabric
