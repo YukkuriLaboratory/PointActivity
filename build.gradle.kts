@@ -8,6 +8,7 @@ val minecraftVersion = project.property("minecraft_version")
 val modVersion = System.getenv("MOD_VERSION") ?: "develop"
 
 version = "$modVersion+$minecraftVersion"
+println("Version: $version")
 group = project.property("maven_group")!!
 
 repositories {
