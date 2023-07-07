@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "PointActivity",
   "description": "",
+  "icon": "assets/pointactivity/icon.png",
   "authors": [],
   "contact": {},
   "license": "MIT",
